@@ -21,7 +21,6 @@ export default function LoginScreen() {
       .then((response) => {
         setEmail("");
         setPassword("");
-        console.log("Resonse" , response.data.user);
         navigation.navigate('home')
         setError(null)
       }).catch((err) => {

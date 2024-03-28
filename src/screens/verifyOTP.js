@@ -6,7 +6,7 @@ import { Button, TextInput } from '@react-native-material/core'
 import React, { useState } from 'react'
 import axios from 'axios'
 import { heightPercentageToDP, widthPercentageToDP } from 'react-native-responsive-screen'
-export default function verifyOTP() {
+export default function VerifyOTP() {
     const navigation = useNavigation('')
 
     const [email, setEmail] = useState('')

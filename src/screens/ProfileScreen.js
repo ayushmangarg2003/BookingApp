@@ -1,16 +1,26 @@
-import { Image, StyleSheet, Text, View } from 'react-native'
-import React from 'react'
-import { SafeAreaView } from 'react-native-safe-area-context'
-import { heightPercentageToDP, widthPercentageToDP } from 'react-native-responsive-screen'
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import React from 'react';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { heightPercentageToDP, widthPercentageToDP } from 'react-native-responsive-screen';
+import { red, white } from '../constants/constants';
+import Navbar from '../components/Navbar';
+import { useNavigation } from '@react-navigation/native';
 
 export default function ProfileScreen() {
+    const navigation = useNavigation()
+    const handelLogout = () => {
+        navigation.navigate('login')
+    }
+
     return (
         <SafeAreaView style={styles.container}>
+            <Navbar />
             <Image style={styles.avatarImg} source={require("../assets/avatar.png")} />
-            <Text style={styles.text}>Hello Ji</Text>
+            <Text style={styles.text}>Hello</Text>
+            <TouchableOpacity onPress={handelLogout} style={styles.buttonStyle}><Text style={styles.btn_text}>Logout</Text></TouchableOpacity>
         </SafeAreaView>
     )
-}
+};
 
 const styles = StyleSheet.create({
     container: {
@@ -20,7 +30,7 @@ const styles = StyleSheet.create({
         height: heightPercentageToDP(100),
         justifyContent: 'center',
         alignItems: 'center',
-        gap:10,
+        gap: 20,
     },
     avatarImg: {
         height: widthPercentageToDP(50),
@@ -28,10 +38,23 @@ const styles = StyleSheet.create({
     },
     text: {
         width: widthPercentageToDP(90),
-        textAlign:'center',
-        borderRadius:4,
-        padding:10,
-        fontSize:18,
-        backgroundColor:'#fff'
+        textAlign: 'center',
+        borderRadius: 4,
+        padding: 10,
+        fontSize: 18,
+        backgroundColor: white
+    },
+    buttonStyle: {
+        width: widthPercentageToDP(90),
+        textAlign: 'center',
+        display: 'flex',
+        alignItems: 'center',
+        backgroundColor: red,
+    },
+    btn_text: {
+        color: '#fff',
+        borderRadius: 4,
+        padding: 10,
+        fontSize: 18,
     }
 })
