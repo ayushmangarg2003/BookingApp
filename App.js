@@ -9,11 +9,10 @@ import VerifyOTP from './src/screens/VerifyOTP';
 import BookingsScreen from './src/screens/BookingsScreen';
 import MyPlaces from './src/screens/MyPlaces';
 import About from './src/screens/About';
-import Contact from './src/screens/Contact';
+import Search from './src/screens/Search';
 import AddPlaceScreen from './src/screens/AddPlaceScreen';
 import SinglePlaceScreen from './src/screens/SinglePlaceScreen';
-import Navbar from './src/components/Navbar';
-import { SafeAreaView } from 'react-native-safe-area-context';
+
 const Stack = createNativeStackNavigator();
 
 const App = () => {
@@ -28,7 +27,7 @@ const App = () => {
           <Stack.Screen options={{ headerShown: false }} name="bookings" component={BookingsScreen} />
           <Stack.Screen options={{ headerShown: false }} name="myplaces" component={MyPlaces} />
           <Stack.Screen options={{ headerShown: false }} name="about" component={About} />
-          <Stack.Screen options={{ headerShown: false }} name="contact" component={Contact} />
+          <Stack.Screen options={{ headerShown: false }} name="search" component={Search} />
           <Stack.Screen options={{ headerShown: false }} name="addplace" component={AddPlaceScreen} />
           <Stack.Screen options={{ headerShown: false }} name="singleplace" component={SinglePlaceScreen} />
         </Stack.Navigator>

@@ -1,8 +1,7 @@
 import { StyleSheet, TouchableOpacity, View } from 'react-native'
 import React from 'react'
-import { SafeAreaView } from 'react-native-safe-area-context'
 import { heightPercentageToDP, widthPercentageToDP } from 'react-native-responsive-screen'
-import { BuildingOfficeIcon, ChatBubbleLeftEllipsisIcon, HomeIcon, PlusIcon, UserIcon } from 'react-native-heroicons/outline'
+import { BuildingOfficeIcon, HomeIcon, MagnifyingGlassIcon, PlusIcon, UserIcon } from 'react-native-heroicons/outline'
 import { useNavigation } from '@react-navigation/native'
 
 
@@ -13,8 +12,8 @@ const Navbar = () => {
             <TouchableOpacity onPress={() => { navigation.navigate('home') }}>
                 <HomeIcon size={30} strokeWidth={2} color={'#777'} />
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => { navigation.navigate('contact') }}>
-                <ChatBubbleLeftEllipsisIcon size={30} strokeWidth={2} color={'#777'} />
+            <TouchableOpacity onPress={() => { navigation.navigate('search') }}>
+                <MagnifyingGlassIcon size={30} strokeWidth={2} color={'#777'} />
             </TouchableOpacity>
             <TouchableOpacity onPress={() => { navigation.navigate('addplace') }}>
                 <PlusIcon size={30} strokeWidth={2} color={'#777'} />
@@ -43,5 +42,6 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         padding: 16,
         alignItems: 'center',
+        zIndex: 4,
     }
 })

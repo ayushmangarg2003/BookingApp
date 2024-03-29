@@ -1,6 +1,5 @@
-import { Image, Platform, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { Platform, StyleSheet, Text } from 'react-native'
 import React from 'react'
-import { widthPercentageToDP } from 'react-native-responsive-screen'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useNavigation } from '@react-navigation/native'
 import Navbar from '../components/Navbar'
@@ -18,6 +17,7 @@ export default function HomeScreen() {
     return (
         <SafeAreaView style={styles.container}>
             <Navbar />
+            
             <Text>Home</Text>
         </SafeAreaView>
     )
