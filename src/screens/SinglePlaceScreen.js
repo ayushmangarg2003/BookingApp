@@ -100,7 +100,7 @@ const SinglePlaceScreen = (props) => {
         </View>
 
         <View>
-          {/* <BookingWidget _id={place._id} price={place.price} /> */}
+          <BookingWidget _id={place._id} price={place.price} />
         </View>
 
         <View>
@@ -144,7 +144,7 @@ const styles = StyleSheet.create({
     height: 120
   },
   title: {
-    paddingHorizontal: 4,
+    paddingHorizontal: 2,
     fontSize: 20,
     fontWeight: '800',
   },

@@ -7,6 +7,7 @@ import React, { useContext, useState } from 'react'
 import axios from 'axios'
 import { heightPercentageToDP, widthPercentageToDP } from 'react-native-responsive-screen'
 import { AuthContext } from '../../App'
+import "../ignoreWarnings.js"
 
 export default function LoginScreen() {
   const [authState, setAuthState] = useContext(AuthContext);
@@ -41,7 +42,7 @@ export default function LoginScreen() {
     <SafeAreaView style={styles.parent}>
       <View style={styles.container}>
         <View style={styles.headingParent}>
-          <Text style={styles.heading}>SIGN IN</Text>
+          <Text style={styles.heading}>LOGIN</Text>
         </View>
         <View style={styles.contentContainer}>
           <View>
