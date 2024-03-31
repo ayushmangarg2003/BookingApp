@@ -1,14 +1,16 @@
 import { StyleSheet, Text, View } from 'react-native'
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { useNavigation } from '@react-navigation/native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { backendLink, black, gray, white, errorColor, red } from '../constants/constants'
 import { Button, TextInput } from '@react-native-material/core'
 import axios from 'axios'
 import { heightPercentageToDP, widthPercentageToDP } from 'react-native-responsive-screen'
+import { AuthContext } from '../../App'
 
 const RegisterScreen = () => {
   const navigation = useNavigation('')
+  const [authState, setAuthState] = useContext(AuthContext);
 
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
@@ -23,8 +25,10 @@ const RegisterScreen = () => {
         setName("");
         setEmail("");
         setPassword("");
+        setAuthState({
+          signedIn: true, email: response.data.user.email,
+        })
         navigation.navigate('verifyotp')
-
       }).catch((err) => {
         setError(err.response.data.error)
       })

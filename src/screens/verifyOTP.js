@@ -3,16 +3,21 @@ import { backendLink, gray, white, errorColor, red } from '../constants/constant
 import { useNavigation } from '@react-navigation/native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { Button, TextInput } from '@react-native-material/core'
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import axios from 'axios'
 import { heightPercentageToDP, widthPercentageToDP } from 'react-native-responsive-screen'
+import { AuthContext } from '../../App'
 export default function VerifyOTP() {
     const navigation = useNavigation('')
+    const [authState, setAuthState] = useContext(AuthContext);
 
-    const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [error, setError] = useState(null);
 
+    const code = {
+        userId: authState.email,
+        otp: password
+    }
 
     const getData = async (code) => {
         try {
@@ -28,11 +33,6 @@ export default function VerifyOTP() {
         }
     }
 
-    const code = {
-        userId: email,
-        otp: password
-    }
-
     const handelSubmit = async () => {
         await getData(code)
     }
@@ -45,7 +45,6 @@ export default function VerifyOTP() {
                 </View>
                 <View style={styles.contentContainer}>
                     <View>
-                        <TextInput value={email} onChangeText={(text) => setEmail(text)} placeholder='Email' color={red} style={styles.textInput} />
 
                         <TextInput maxLength={4} value={password} onChangeText={(text) => setPassword(text)} className='otp-input' keyboardType='number-pad' placeholder='Enter OTP' secureTextEntry={true} color={red} style={styles.textInput} />
 

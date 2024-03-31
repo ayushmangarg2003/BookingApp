@@ -1,4 +1,3 @@
-import React from 'react'
 import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import LoginScreen from './src/screens/LoginScreen';
@@ -12,12 +11,23 @@ import About from './src/screens/About';
 import Search from './src/screens/Search';
 import AddPlaceScreen from './src/screens/AddPlaceScreen';
 import SinglePlaceScreen from './src/screens/SinglePlaceScreen';
+import React, { useState, createContext, useContext } from "react";
 
 const Stack = createNativeStackNavigator();
 
+export const AuthContext = createContext({ authState: { id: "", email: "", signedIn: false }, setAuthState: () => { } });
+
 const App = () => {
+  const [authState, setAuthState] = useState(
+    {
+      email: '',
+      signedIn: false
+    }
+  );
+
   return (
-      <NavigationContainer>
+    <NavigationContainer>
+      <AuthContext.Provider value={[authState, setAuthState]}>
         <Stack.Navigator>
           <Stack.Screen options={{ headerShown: false }} name="login" component={LoginScreen} />
           <Stack.Screen options={{ headerShown: false }} name="register" component={RegisterScreen} />
@@ -31,7 +41,8 @@ const App = () => {
           <Stack.Screen options={{ headerShown: false }} name="addplace" component={AddPlaceScreen} />
           <Stack.Screen options={{ headerShown: false }} name="singleplace" component={SinglePlaceScreen} />
         </Stack.Navigator>
-      </NavigationContainer>
+      </AuthContext.Provider>
+    </NavigationContainer>
   )
 }
 

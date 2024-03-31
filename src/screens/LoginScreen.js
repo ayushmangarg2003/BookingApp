@@ -3,11 +3,13 @@ import { backendLink, gray, white, errorColor, red } from '../constants/constant
 import { useNavigation } from '@react-navigation/native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { Button, TextInput } from '@react-native-material/core'
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import axios from 'axios'
 import { heightPercentageToDP, widthPercentageToDP } from 'react-native-responsive-screen'
+import { AuthContext } from '../../App'
 
 export default function LoginScreen() {
+  const [authState, setAuthState] = useContext(AuthContext);
 
   const navigation = useNavigation('')
 
@@ -21,6 +23,9 @@ export default function LoginScreen() {
       .then((response) => {
         setEmail("");
         setPassword("");
+        setAuthState({
+          signedIn: true, email: response.data.user,
+        })
         navigation.navigate('home')
         setError(null)
       }).catch((err) => {
