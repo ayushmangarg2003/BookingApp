@@ -5,7 +5,7 @@ import { heightPercentageToDP, widthPercentageToDP } from 'react-native-responsi
 import { red, white } from '../constants/constants';
 import Navbar from '../components/Navbar';
 import { useNavigation } from '@react-navigation/native';
-import { AuthContext } from '../../App';
+import { AuthContext } from '../context/AuthContext.js'
 
 export default function ProfileScreen() {
     const [authState, setAuthState] = useContext(AuthContext);

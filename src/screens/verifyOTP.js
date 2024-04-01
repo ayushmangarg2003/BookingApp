@@ -6,7 +6,8 @@ import { Button, TextInput } from '@react-native-material/core'
 import React, { useContext, useState } from 'react'
 import axios from 'axios'
 import { heightPercentageToDP, widthPercentageToDP } from 'react-native-responsive-screen'
-import { AuthContext } from '../../App'
+import { AuthContext } from '../context/AuthContext.js'
+
 export default function VerifyOTP() {
     const navigation = useNavigation('')
     const [authState, setAuthState] = useContext(AuthContext);

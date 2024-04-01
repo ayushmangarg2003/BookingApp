@@ -6,7 +6,7 @@ import { backendLink, black, gray, white, errorColor, red } from '../constants/c
 import { Button, TextInput } from '@react-native-material/core'
 import axios from 'axios'
 import { heightPercentageToDP, widthPercentageToDP } from 'react-native-responsive-screen'
-import { AuthContext } from '../../App'
+import { AuthContext } from '../context/AuthContext.js'
 
 const RegisterScreen = () => {
   const navigation = useNavigation('')

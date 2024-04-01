@@ -33,14 +33,14 @@ export default Navbar
 const styles = StyleSheet.create({
     navbar: {
         position: 'absolute',
-        top: heightPercentageToDP(93),
+        top: heightPercentageToDP(94),
         height: heightPercentageToDP(10),
         width: widthPercentageToDP(100),
         display: 'flex',
         backgroundColor: 'white',
         flexDirection: 'row',
         justifyContent: 'space-between',
-        padding: 16,
+        paddingHorizontal: 16,
         alignItems: 'center',
         zIndex: 4,
     }

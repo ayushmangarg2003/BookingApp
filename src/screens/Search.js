@@ -32,12 +32,14 @@ const Search = () => {
     <SafeAreaView style={styles.container}>
       <Navbar />
       <TextInput value={search} onChangeText={(e) => { setSearch(e) }} style={styles.searchBar} color={red} placeholder='Search By Place' />
-      <ScrollView style={styles.card_container}>
-        {
-          filtered.map((item) => (
-            <PlaceCard key={item._id} place={item} />
-          ))
-        }
+      <ScrollView style={styles.card_container_parent}>
+        <View style={styles.card_container}>
+          {
+            filtered.map((item) => (
+              <PlaceCard key={item._id} place={item} />
+            ))
+          }
+        </View>
       </ScrollView>
     </SafeAreaView>
   )
@@ -47,17 +49,27 @@ export default Search
 
 const styles = StyleSheet.create({
   container: {
-    height: heightPercentageToDP(92),
+    height: heightPercentageToDP(93),
+    display: 'flex',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+  },
+  card_container_parent:{
+    width:'100%',
+    paddingVertical:8
   },
   card_container: {
-    height: heightPercentageToDP(80)
+    display: 'flex',
+    width: '100%',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-evenly',
   },
   searchBar: {
-    width: widthPercentageToDP(90),
-    display:'flex',
-    justifyContent:'center',
-    height: heightPercentageToDP(10),
-    margin: 10,
+    width: '90%',
+    display: 'flex',
+    justifyContent: 'center',
+    height: heightPercentageToDP(8),
     alignSelf: 'center',
   }
 })

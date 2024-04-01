@@ -19,7 +19,8 @@ const renderItem = ({ item }) => {
     <View
       style={{
         alignItems: 'center',
-        backgroundColor: 'white',
+        justifyContent:'center',
+        backgroundColor: white,
         width: widthPercentageToDP(100),
         height: 300,
       }}>
@@ -102,7 +103,8 @@ const SinglePlaceScreen = (props) => {
         <View>
           <BookingWidget _id={place._id} price={place.price} />
         </View>
-
+        <Text style={styles.title}>Extra Info.</Text>
+        <Text style={styles.body}>{place.extraInfo}</Text>
         <View>
           {
             !showRev ? (<></>) : (
@@ -125,8 +127,7 @@ const SinglePlaceScreen = (props) => {
           }
 
         </View>
-        <Text style={styles.title}>Extra Info.</Text>
-        <Text style={styles.body}>{place.extraInfo}</Text>
+
       </ScrollView>
     </SafeAreaView>
   )
@@ -137,19 +138,18 @@ export default SinglePlaceScreen
 const styles = StyleSheet.create({
   scrollview: {
     height: heightPercentageToDP(89),
-    paddingHorizontal: 4,
+    paddingHorizontal: 2,
   },
   img: {
     width: 120,
     height: 120
   },
   title: {
-    paddingHorizontal: 2,
     fontSize: 20,
     fontWeight: '800',
   },
   address: {
-    fontSize: 18,
+    fontSize: 16,
     paddingHorizontal: 4,
     fontStyle: 'italic',
     textDecorationLine: 'underline',
@@ -157,10 +157,9 @@ const styles = StyleSheet.create({
   perks: {
     display: 'flex',
     flexDirection: 'row',
-    alignItems: 'center',
+    alignItems: 'flex-start',
     flexWrap: 'wrap',
     gap: 12,
-    padding: 4,
   },
   perk: {
     backgroundColor: red,
@@ -168,16 +167,15 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     fontWeight: '800',
     textAlign: 'center',
-    paddingVertical: 12,
-    width: widthPercentageToDP(25),
+    paddingVertical: 8,
+    width: widthPercentageToDP(20),
     textTransform: 'capitalize'
   },
   numbers: {
     display: 'flex',
     flexDirection: 'row',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     gap: 8,
-    padding: 8,
   },
   number: {
     width: '30%',
@@ -187,7 +185,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   body: {
-    paddingHorizontal: 8,
+    paddingBottom:4,
   },
   reviews_parent: {
     padding: 8,

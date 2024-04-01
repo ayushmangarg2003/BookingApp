@@ -11,12 +11,10 @@ import About from './src/screens/About';
 import Search from './src/screens/Search';
 import AddPlaceScreen from './src/screens/AddPlaceScreen';
 import SinglePlaceScreen from './src/screens/SinglePlaceScreen';
-import React, { useState, createContext, useContext } from "react";
+import React, { useState } from "react";
+import { AuthContext } from './src/context/AuthContext';
 
 const Stack = createNativeStackNavigator();
-
-export const AuthContext = createContext({ authState: { id: "", email: "", signedIn: false }, setAuthState: () => { } });
-
 const App = () => {
   const [authState, setAuthState] = useState(
     {

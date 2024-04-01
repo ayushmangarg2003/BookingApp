@@ -1,6 +1,8 @@
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
 import { useNavigation } from '@react-navigation/native'
+import { heightPercentageToDP, widthPercentageToDP } from 'react-native-responsive-screen'
+import { LinearGradient } from 'expo-linear-gradient'
 
 const PlaceCard = (props) => {
 
@@ -12,64 +14,55 @@ const PlaceCard = (props) => {
   }
 
   return (
-    <View style={styles.t_card}>
-      <TouchableOpacity onPress={handelClick} style={styles.place_card_link}>
-        <View style={styles.t_image}>
-          <Image style={styles.image} source={{ uri: props.place.photos[1] }} />
-        </View>
-        <View style={styles.card_text}>
-          <Text style={styles.heading}>{props.place.address}</Text>
-          <Text style={styles.title}>{props.place.title}</Text>
-          <Text style={styles.price}>₹<Text style={styles.amount}>{props.place.price} </Text> without taxes</Text>
-        </View>
-      </TouchableOpacity>
-    </View>
+    <TouchableOpacity onPress={handelClick} style={styles.desCard}>
+      <Image style={styles.desImage} source={{ uri: props.place.photos[1] }} />
+      <LinearGradient
+        colors={['transparent', 'rgba(0,0,0,0.8)']}
+        style={styles.linearGradient}
+        start={{ x: 0.5, y: 0 }}
+        end={{ x: 0.5, y: 1 }}
+      />
+      <Text style={styles.desTitle}>{props.place.address}</Text>
+      <Text style={styles.desSub}>{props.place.title}</Text>
+      <Text style={styles.desSub}>₹<Text style={styles.amount}>{props.place.price} </Text> without taxes</Text>
+    </TouchableOpacity>
   )
 }
 
 export default PlaceCard
 
 const styles = StyleSheet.create({
-  t_card: {
-    marginVertical: 12,
-    marginHorizontal: 20,
-    padding: 12,
-    borderRadius: 20,
-    height: 375,
-    width: '280px',
-    backgroundColor: 'white',
-    display: 'flex',
-    justifyContent: 'space-between',
-  },
-  t_image: {
-    borderRadius: 12,
-    width: '100%',
-    height: '80%',
-    objectFit: 'cover',
-  },
-  image: {
-    width: '100%',
-    borderRadius: 12,
-    height: '100%',
-  },
-  card_text: {
+  desCard: {
+    width: widthPercentageToDP(45),
+    height: widthPercentageToDP(65),
     display: 'flex',
     justifyContent: 'flex-end',
-    height: '20%',
+    position: 'relative',
+    padding: 16,
+    paddingVertical: 24,
+    marginBottom: 20,
   },
-  heading: {
-    fontSize: 24,
-    fontWeight: '800',
+  desImage: {
+    width: widthPercentageToDP(44),
+    height: widthPercentageToDP(65),
+    borderRadius: 35,
+    position: 'absolute'
   },
-  title: {
-    fontSize: 14,
+  linearGradient: {
+    width: widthPercentageToDP(44),
+    height: heightPercentageToDP(15),
+    borderBottomLeftRadius: 35,
+    borderBottomRightRadius: 35,
+    position: 'absolute',
+    bottom: 0,
   },
-  price: {
-    fontSize: 16,
-    textDecorationLine: 'underline'
+  desTitle: {
+    fontSize: widthPercentageToDP(4),
+    color: '#fff',
+    fontWeight: '600',
   },
-  amount: {
-    fontWeight: '800',
-
+  desSub: {
+    fontSize: widthPercentageToDP(2.2),
+    color: '#fff',
   }
 })
