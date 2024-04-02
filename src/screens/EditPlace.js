@@ -1,15 +1,15 @@
-import {StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
-const MyPlaces = () => {
+const EditPlace = () => {
   return (
     <SafeAreaView>
-      <Text>MyPlaces</Text>
+      <Text>editPlace</Text>
     </SafeAreaView>
   )
 }
 
-export default MyPlaces
+export default EditPlace
 
 const styles = StyleSheet.create({})

@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: widthPercentageToDP(100),
     height: heightPercentageToDP(100),
-    backgroundColor: 'rgba(255,255,255,0.8)',
+    backgroundColor: 'rgba(255,255,255,0.5)',
   },
   horizontal: {
     flexDirection: 'row',

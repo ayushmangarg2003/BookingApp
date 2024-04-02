@@ -5,10 +5,11 @@ import { heightPercentageToDP, widthPercentageToDP } from 'react-native-responsi
 import { LinearGradient } from 'expo-linear-gradient'
 
 const PlaceCard = (props) => {
+  // console.log(props.to);
 
   const navigation = useNavigation()
   const handelClick = () => {
-    navigation.navigate(`singleplace`, {
+    navigation.navigate(props.to, {
       place: props.place
     })
   }

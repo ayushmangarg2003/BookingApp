@@ -8,7 +8,7 @@ import PlaceCard from '../components/PlaceCard'
 import { MagnifyingGlassIcon } from 'react-native-heroicons/outline'
 import { useNavigation } from '@react-navigation/native'
 
-const Search = () => {
+const Home = () => {
   const [search, setSearch] = useState("")
   const [placesArray, setPlacesArray] = useState([])
   const [loading, setLoading] = useState(true)
@@ -62,7 +62,7 @@ const Search = () => {
         <View style={styles.card_container}>
           {
             filtered.map((item) => (
-              <PlaceCard key={item._id} place={item} />
+              <PlaceCard to={'singleplace'} key={item._id} place={item} />
             ))
           }
         </View>
@@ -71,7 +71,7 @@ const Search = () => {
   )
 }
 
-export default Search
+export default Home
 
 const styles = StyleSheet.create({
   container: {
@@ -108,12 +108,6 @@ const styles = StyleSheet.create({
     paddingLeft: 24,
     backgroundColor: '#eaeaea'
   },
-  // container: {
-  //   height: heightPercentageToDP(93),
-  //   display: 'flex',
-  //   flexWrap: 'wrap',
-  //   justifyContent: 'space-between',
-  // },
   card_container_parent: {
     width: '100%',
     paddingVertical: 8

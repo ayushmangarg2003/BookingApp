@@ -24,7 +24,7 @@ export default function VerifyOTP() {
         try {
             const res = await axios.post(`${backendLink}/user/verifyOTP`, code)
             if (res.data.status == 'verified') {
-                navigation.navigate('search')
+                navigation.navigate('home')
             }
             else {
                 setError(res.data.message)

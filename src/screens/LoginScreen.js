@@ -30,7 +30,7 @@ export default function LoginScreen() {
           signedIn: true, email: response.data.user,
         })
         setLoading(false)
-        navigation.navigate('search')
+        navigation.navigate('home')
         setError(null)
       }).catch((err) => {
         setError(err.response.data.error)
@@ -76,7 +76,7 @@ export default function LoginScreen() {
 const styles = StyleSheet.create({
   parent: {
     width: widthPercentageToDP(100),
-    height: heightPercentageToDP(100),
+    height: '100%',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',

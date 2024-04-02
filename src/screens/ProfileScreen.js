@@ -24,11 +24,13 @@ export default function ProfileScreen() {
     }
     return (
         <SafeAreaView style={styles.container}>
-            <Image style={styles.avatarImg} source={require("../assets/avatar.png")} />
-            <Text style={styles.text}>{authState.email}</Text>
+            <View style={styles.profileCard}>
+                <Image style={styles.avatarImg} source={require("../assets/avatar.png")} />
+                <Text style={styles.text}>{authState.email}</Text>
+            </View>
+            <TouchableOpacity onPress={navigateBookings} style={styles.pageTextStyle}><Text style={styles.pageText}>Your Bookings</Text></TouchableOpacity>
+            <TouchableOpacity onPress={navigatePlaces} style={styles.pageTextStyle}><Text style={styles.pageText}>Your Places</Text></TouchableOpacity>
             <TouchableOpacity onPress={handelLogout} style={styles.buttonStyle}><Text style={styles.btn_text}>Logout</Text></TouchableOpacity>
-            <TouchableOpacity onPress={navigateBookings} style={styles.buttonStyle}><Text style={styles.btn_text}>Your Bookings</Text></TouchableOpacity>
-            <TouchableOpacity onPress={navigatePlaces} style={styles.buttonStyle}><Text style={styles.btn_text}>Your Places</Text></TouchableOpacity>
         </SafeAreaView>
     )
 };
@@ -36,24 +38,24 @@ export default function ProfileScreen() {
 const styles = StyleSheet.create({
     container: {
         display: 'flex',
-        backgroundColor: '#fff',
+        backgroundColor: white,
         width: widthPercentageToDP(100),
         height: '100%',
-        justifyContent: 'center',
         alignItems: 'center',
         gap: 20,
+        padding: 16,
     },
     avatarImg: {
         height: widthPercentageToDP(50),
         width: widthPercentageToDP(50),
     },
     text: {
-        width: widthPercentageToDP(90),
+        width: '90%',
         textAlign: 'center',
         borderRadius: 4,
         padding: 10,
         fontSize: 18,
-        backgroundColor: white
+        backgroundColor: white,
     },
     buttonStyle: {
         width: widthPercentageToDP(90),
@@ -62,10 +64,35 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: red,
     },
+    pageTextStyle: {
+        width: widthPercentageToDP(90),
+        textAlign: 'center',
+        display: 'flex',
+        alignItems: 'center',
+        backgroundColor: '#fff',
+        color: red,
+    },
     btn_text: {
         color: '#fff',
         borderRadius: 4,
         padding: 10,
         fontSize: 18,
+        textTransform:'uppercase',
+        fontWeight:'800'
+    },
+    pageText: {
+        borderRadius: 4,
+        padding: 10,
+        fontSize: 16,
+    },
+    profileCard: {
+        backgroundColor: '#fff',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: '100%',
+        height: 'auto',
+        padding: 16,
+        gap: 8,
     }
 })
