@@ -1,14 +1,12 @@
 import { Dimensions, Image, ScrollView, StyleSheet, Text, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import Navbar from '../components/Navbar'
-import { heightPercentageToDP, widthPercentageToDP } from 'react-native-responsive-screen'
-import BookingCard from '../components/BookingCard'
+import { widthPercentageToDP } from 'react-native-responsive-screen'
 import axios from 'axios'
 import { backendLink, red, white } from "../constants/constants"
 import Carousel from 'react-native-snap-carousel';
 import BookingWidget from '../components/BookingWidget'
-
+import Loader from "../components/Loader"
 
 export const SLIDER_WIDTH = Dimensions.get('window').width;
 export const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 1);
@@ -19,7 +17,7 @@ const renderItem = ({ item }) => {
     <View
       style={{
         alignItems: 'center',
-        justifyContent:'center',
+        justifyContent: 'center',
         backgroundColor: white,
         width: widthPercentageToDP(100),
         height: 300,
@@ -36,10 +34,13 @@ const SinglePlaceScreen = (props) => {
     perks: []
   })
 
+  const [loading, setLoading] = useState(true)
+
   useEffect(() => {
     axios.get(`${backendLink}/places/${props.route.params.place._id}`).then(response => {
       const { data } = response;
       setPlace(data)
+      setLoading(false)
     })
   }, [])
 
@@ -65,79 +66,82 @@ const SinglePlaceScreen = (props) => {
     return review.place == place._id
   }
 
-  return (
-    <SafeAreaView>
-      <Navbar />
-      <ScrollView style={styles.scrollview}>
-        <Text style={styles.title}>{place.title}</Text>
-        <Text style={styles.address}>{place.address}</Text>
-        <View>
-          <Carousel
-            data={photos}
-            renderItem={renderItem}
-            sliderWidth={SLIDER_WIDTH}
-            itemWidth={ITEM_WIDTH}
-          />
-        </View>
+  return <>
+    {
 
-        <View>
-          <Text style={styles.title}>Description</Text>
-          <Text style={styles.body}>{place.description}</Text>
-        </View>
+      loading ? (<Loader />) : (<SafeAreaView>
+        <ScrollView style={styles.scrollview}>
+          <Text style={styles.title}>{place.title}</Text>
+          <Text style={styles.address}>{place.address}</Text>
+          <View>
+            <Carousel
+              data={photos}
+              renderItem={renderItem}
+              sliderWidth={SLIDER_WIDTH}
+              itemWidth={ITEM_WIDTH}
+            />
+          </View>
 
-        <View style={styles.numbers}>
-          <Text style={styles.number}>Max Guests: {place.maxGuests}</Text>
-          <Text style={styles.number}>Check In : {place.checkIn}</Text>
-          <Text style={styles.number}>Check Out : {place.checkOut}</Text>
-        </View>
+          <View>
+            <Text style={styles.title}>Description</Text>
+            <Text style={styles.body}>{place.description}</Text>
+          </View>
 
-        <Text style={styles.title}>Perks</Text>
-        <View style={styles.perks}>
-          {
-            perks.map((item, index) => (
-              <Text style={styles.perk} key={index}>{item}</Text>
-            ))
-          }
-        </View>
+          <View style={styles.numbers}>
+            <Text style={styles.number}>Max Guests: {place.maxGuests}</Text>
+            <Text style={styles.number}>Check In : {place.checkIn}</Text>
+            <Text style={styles.number}>Check Out : {place.checkOut}</Text>
+          </View>
 
-        <View>
-          <BookingWidget _id={place._id} price={place.price} />
-        </View>
-        <Text style={styles.title}>Extra Info.</Text>
-        <Text style={styles.body}>{place.extraInfo}</Text>
-        <View>
-          {
-            !showRev ? (<></>) : (
-              <>
-                <View>
-                  <Text style={styles.title}>Reviews</Text>
-                </View>
-                <View style={styles.reviews_parent}>
-                  {
-                    filtered.map((item, index) => (
-                      <View key={index} style={styles.review}>
-                        <Text style={styles.review_text}>{item.review}</Text>
-                        <View style={styles.review_red}></View>
-                      </View>
-                    ))
-                  }
-                </View>
-              </>
-            )
-          }
+          <Text style={styles.title}>Perks</Text>
+          <View style={styles.perks}>
+            {
+              perks.map((item, index) => (
+                <Text style={styles.perk} key={index}>{item}</Text>
+              ))
+            }
+          </View>
 
-        </View>
+          <View>
+            <BookingWidget _id={place._id} price={place.price} />
+          </View>
+          <Text style={styles.title}>Extra Info.</Text>
+          <Text style={styles.body}>{place.extraInfo}</Text>
+          <View>
+            {
+              !showRev ? (<></>) : (
+                <>
+                  <View>
+                    <Text style={styles.title}>Reviews</Text>
+                  </View>
+                  <View style={styles.reviews_parent}>
+                    {
+                      filtered.map((item, index) => (
+                        <View key={index} style={styles.review}>
+                          <Text style={styles.review_text}>{item.review}</Text>
+                          <View style={styles.review_red}></View>
+                        </View>
+                      ))
+                    }
+                  </View>
+                </>
+              )
+            }
 
-      </ScrollView>
-    </SafeAreaView>
-  )
+          </View>
+
+        </ScrollView>
+      </SafeAreaView>)
+    }
+  </>
+
 }
 
 export default SinglePlaceScreen
 
 const styles = StyleSheet.create({
   scrollview: {
-    height: heightPercentageToDP(89),
+    height: '100%',
     paddingHorizontal: 2,
   },
   img: {
@@ -185,7 +189,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   body: {
-    paddingBottom:4,
+    paddingBottom: 4,
   },
   reviews_parent: {
     padding: 8,

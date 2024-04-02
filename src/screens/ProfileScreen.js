@@ -1,9 +1,8 @@
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import React, { useContext } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { heightPercentageToDP, widthPercentageToDP } from 'react-native-responsive-screen';
+import { widthPercentageToDP } from 'react-native-responsive-screen';
 import { red, white } from '../constants/constants';
-import Navbar from '../components/Navbar';
 import { useNavigation } from '@react-navigation/native';
 import { AuthContext } from '../context/AuthContext.js'
 
@@ -17,13 +16,19 @@ export default function ProfileScreen() {
         })
         navigation.navigate('login')
     }
-
+    const navigateBookings = () => {
+        navigation.navigate('bookings')
+    }
+    const navigatePlaces = () => {
+        navigation.navigate('profilePlace')
+    }
     return (
         <SafeAreaView style={styles.container}>
-            <Navbar />
             <Image style={styles.avatarImg} source={require("../assets/avatar.png")} />
             <Text style={styles.text}>{authState.email}</Text>
             <TouchableOpacity onPress={handelLogout} style={styles.buttonStyle}><Text style={styles.btn_text}>Logout</Text></TouchableOpacity>
+            <TouchableOpacity onPress={navigateBookings} style={styles.buttonStyle}><Text style={styles.btn_text}>Your Bookings</Text></TouchableOpacity>
+            <TouchableOpacity onPress={navigatePlaces} style={styles.buttonStyle}><Text style={styles.btn_text}>Your Places</Text></TouchableOpacity>
         </SafeAreaView>
     )
 };
@@ -31,9 +36,9 @@ export default function ProfileScreen() {
 const styles = StyleSheet.create({
     container: {
         display: 'flex',
-        backgroundColor: '#f6f6f6',
+        backgroundColor: '#fff',
         width: widthPercentageToDP(100),
-        height: heightPercentageToDP(100),
+        height: '100%',
         justifyContent: 'center',
         alignItems: 'center',
         gap: 20,

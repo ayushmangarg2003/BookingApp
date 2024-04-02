@@ -1,23 +1,25 @@
 import { Image, ScrollView, StyleSheet, Text, View } from 'react-native'
 import React, { useContext, useEffect, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import Navbar from '../components/Navbar'
 import { AuthContext } from '../context/AuthContext.js'
 import axios from 'axios';
 import { backendLink, red } from "../constants/constants.js"
 import BookingCard from "../components/BookingCard.js"
 import noData from "../assets/noData.png"
 import { heightPercentageToDP, widthPercentageToDP } from 'react-native-responsive-screen'
+import Loader from '../components/Loader.js';
 
 const BookingsScreen = () => {
   const [authState, setAuthState] = useContext(AuthContext);
   const [bookingArray, setBookingArray] = useState([])
   const [empty, setEmpty] = useState(true)
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     axios.get(`${backendLink}/bookings`).then(response => {
       const { data } = response;
       setBookingArray(data.reverse())
+      setLoading(false)
     });
 
     if (bookingArray.filter(checkPlace).length > 0) {
@@ -33,9 +35,10 @@ const BookingsScreen = () => {
 
   return (
     <SafeAreaView>
-      <Navbar />
+      {
+        loading ? (<Loader />) : (<></>)
+      }
       <View>
-
         {
           empty ? (
             <View style={styles.noDataFound}>
@@ -68,7 +71,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     gap: 20,
     width: widthPercentageToDP(100),
-    height: heightPercentageToDP(100),
+    height: "100%",
   },
   image: {
     width: '75%',

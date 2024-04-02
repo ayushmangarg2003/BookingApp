@@ -8,6 +8,7 @@ import axios from 'axios'
 import { heightPercentageToDP, widthPercentageToDP } from 'react-native-responsive-screen'
 import { AuthContext } from '../context/AuthContext.js'
 import "../ignoreWarnings.js"
+import Loader from '../components/Loader.js'
 
 export default function LoginScreen() {
   const [authState, setAuthState] = useContext(AuthContext);
@@ -17,8 +18,9 @@ export default function LoginScreen() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState(null);
-
+  const [loading, setLoading] = useState(false)
   const handleLogin = async () => {
+    setLoading(true)
     const user = { email: email, password: password }
     await axios.post(`${backendLink}/user/login`, user)
       .then((response) => {
@@ -27,10 +29,12 @@ export default function LoginScreen() {
         setAuthState({
           signedIn: true, email: response.data.user,
         })
-        navigation.navigate('home')
+        setLoading(false)
+        navigation.navigate('search')
         setError(null)
       }).catch((err) => {
         setError(err.response.data.error)
+        setLoading(false)
       })
   }
 
@@ -40,6 +44,9 @@ export default function LoginScreen() {
 
   return (
     <SafeAreaView style={styles.parent}>
+      {
+        loading ? (<Loader />) : (<Text></Text>)
+      }
       <View style={styles.container}>
         <View style={styles.headingParent}>
           <Text style={styles.heading}>LOGIN</Text>

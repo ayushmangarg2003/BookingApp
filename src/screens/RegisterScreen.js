@@ -7,6 +7,7 @@ import { Button, TextInput } from '@react-native-material/core'
 import axios from 'axios'
 import { heightPercentageToDP, widthPercentageToDP } from 'react-native-responsive-screen'
 import { AuthContext } from '../context/AuthContext.js'
+import Loader from '../components/Loader.js'
 
 const RegisterScreen = () => {
   const navigation = useNavigation('')
@@ -16,8 +17,10 @@ const RegisterScreen = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false)
 
   const handleRegister = () => {
+    setLoading(true)
 
     const user = { name: name, email: email, password: password }
     axios.post(`${backendLink}/user/register`, user)
@@ -28,9 +31,13 @@ const RegisterScreen = () => {
         setAuthState({
           signedIn: true, email: response.data.user.email,
         })
+        setLoading(false)
         navigation.navigate('verifyotp')
+
       }).catch((err) => {
         setError(err.response.data.error)
+        setLoading(false)
+
       })
   }
 
@@ -39,6 +46,9 @@ const RegisterScreen = () => {
   }
   return (
     <SafeAreaView>
+      {
+        loading ? (<Loader />) : (<Text></Text>)
+      }
       <View style={styles.parent}>
         <View style={styles.container}>
 
