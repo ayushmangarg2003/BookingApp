@@ -1,7 +1,7 @@
 import { Dimensions, Image, ScrollView, StyleSheet, Text, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { widthPercentageToDP } from 'react-native-responsive-screen'
+import { heightPercentageToDP, widthPercentageToDP } from 'react-native-responsive-screen'
 import axios from 'axios'
 import { backendLink, red, white } from "../constants/constants"
 import Carousel from 'react-native-snap-carousel';
@@ -12,6 +12,7 @@ export const SLIDER_WIDTH = Dimensions.get('window').width;
 export const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 1);
 
 
+
 const renderItem = ({ item }) => {
   return (
     <View
@@ -20,7 +21,8 @@ const renderItem = ({ item }) => {
         justifyContent: 'center',
         backgroundColor: white,
         width: widthPercentageToDP(100),
-        height: 300,
+        height: 450,
+        borderRadius: 30,
       }}>
       <Image source={{ uri: item }} style={{ width: '100%', height: '100%' }} />
     </View>
@@ -54,13 +56,13 @@ const SinglePlaceScreen = (props) => {
   useEffect(() => {
     axios.get(`${backendLink}/review/getReview`).then(response => {
       const { data } = response;
-      setReview(data.reverse())
       setFiltered(review.filter(checkPlace))
+      setReview(data.reverse())
       if (review.filter(checkPlace).length > 0) {
         setShowRev(true)
       }
     })
-  }, [place]);
+  }, [review]);
 
   const checkPlace = (review) => {
     return review.place == place._id
@@ -71,8 +73,6 @@ const SinglePlaceScreen = (props) => {
 
       loading ? (<Loader />) : (<SafeAreaView>
         <ScrollView style={styles.scrollview}>
-          <Text style={styles.title}>{place.title}</Text>
-          <Text style={styles.address}>{place.address}</Text>
           <View>
             <Carousel
               data={photos}
@@ -82,52 +82,54 @@ const SinglePlaceScreen = (props) => {
             />
           </View>
 
-          <View>
-            <Text style={styles.title}>Description</Text>
-            <Text style={styles.body}>{place.description}</Text>
-          </View>
+          <View style={styles.bottomSection}>
 
-          <View style={styles.numbers}>
-            <Text style={styles.number}>Max Guests: {place.maxGuests}</Text>
-            <Text style={styles.number}>Check In : {place.checkIn}</Text>
-            <Text style={styles.number}>Check Out : {place.checkOut}</Text>
-          </View>
 
-          <Text style={styles.title}>Perks</Text>
-          <View style={styles.perks}>
-            {
-              perks.map((item, index) => (
-                <Text style={styles.perk} key={index}>{item}</Text>
-              ))
-            }
-          </View>
+            <Text style={styles.title}>{place.title.trim()}</Text>
+            <Text style={styles.address}>{place.address.trim()}</Text>
+            <Text style={styles.body}>{place.description.trim()}</Text>
 
-          <View>
+
+            <View style={styles.numbers}>
+              <Text style={styles.number}>Max Guests: {place.maxGuests}</Text>
+              <Text style={styles.number}>Check In : {place.checkIn}</Text>
+              <Text style={styles.number}>Check Out : {place.checkOut}</Text>
+            </View>
+
+            <View style={styles.perks}>
+              {
+                perks.map((item, index) => (
+                  <Text style={styles.perk} key={index}>{item}</Text>
+                ))
+              }
+            </View>
+
             <BookingWidget _id={place._id} price={place.price} />
-          </View>
-          <Text style={styles.title}>Extra Info.</Text>
-          <Text style={styles.body}>{place.extraInfo}</Text>
-          <View>
-            {
-              !showRev ? (<></>) : (
-                <>
-                  <View>
-                    <Text style={styles.title}>Reviews</Text>
-                  </View>
-                  <View style={styles.reviews_parent}>
-                    {
-                      filtered.map((item, index) => (
-                        <View key={index} style={styles.review}>
-                          <Text style={styles.review_text}>{item.review}</Text>
-                          <View style={styles.review_red}></View>
-                        </View>
-                      ))
-                    }
-                  </View>
-                </>
-              )
-            }
 
+            <Text style={styles.title}>Extra Info.</Text>
+            <Text style={styles.body}>{place.extraInfo}</Text>
+            <View>
+              {
+                !showRev ? (<></>) : (
+                  <>
+                    <View>
+                      <Text style={styles.title}>Reviews</Text>
+                    </View>
+                    <View style={styles.reviews_parent}>
+                      {
+                        filtered.map((item, index) => (
+                          <View key={index} style={styles.review}>
+                            <Text style={styles.review_text}>{item.review}</Text>
+                            <View style={styles.review_red}></View>
+                          </View>
+                        ))
+                      }
+                    </View>
+                  </>
+                )
+              }
+
+            </View>
           </View>
 
         </ScrollView>
@@ -141,8 +143,15 @@ export default SinglePlaceScreen
 
 const styles = StyleSheet.create({
   scrollview: {
-    height: '100%',
-    paddingHorizontal: 2,
+    backgroundColor: '#fff',
+  },
+  bottomSection: {
+    borderRadius: 30,
+    paddingHorizontal: 12,
+    paddingVertical:20,
+    position: 'relative',
+    backgroundColor: '#fff',
+    top: -20,
   },
   img: {
     width: 120,
@@ -154,7 +163,6 @@ const styles = StyleSheet.create({
   },
   address: {
     fontSize: 16,
-    paddingHorizontal: 4,
     fontStyle: 'italic',
     textDecorationLine: 'underline',
   },
@@ -171,35 +179,31 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     fontWeight: '800',
     textAlign: 'center',
-    paddingVertical: 8,
+    paddingVertical: 12,
     width: widthPercentageToDP(20),
     textTransform: 'capitalize'
   },
   numbers: {
     display: 'flex',
     flexDirection: 'row',
-    justifyContent: 'flex-start',
-    gap: 8,
+    justifyContent: 'space-between',
+    paddingVertical: 12,
   },
   number: {
-    width: '30%',
+    width: '32%',
     textAlign: 'center',
-    padding: 4,
-    borderRadius: 4,
-    backgroundColor: '#fff',
-  },
-  body: {
-    paddingBottom: 4,
+    paddingVertical: 12,
+    backgroundColor: '#ededed',
   },
   reviews_parent: {
-    padding: 8,
     display: 'flex',
     gap: 8,
   },
   review: {
-    backgroundColor: '#ddd',
+    backgroundColor: '#ededed',
     display: 'flex',
-    flexDirection: 'row-reverse'
+    flexDirection: 'row-reverse',
+    borderRadius: 20
   },
   review_red: {
     width: '10%',
@@ -207,7 +211,7 @@ const styles = StyleSheet.create({
   },
   review_text: {
     width: "90%",
-    padding: 4,
+    padding: 8,
     fontSize: 12,
   },
 })

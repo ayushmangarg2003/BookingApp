@@ -28,8 +28,10 @@ export default function ProfileScreen() {
                 <Image style={styles.avatarImg} source={require("../assets/avatar.png")} />
                 <Text style={styles.text}>{authState.email}</Text>
             </View>
-            <TouchableOpacity onPress={navigateBookings} style={styles.pageTextStyle}><Text style={styles.pageText}>Your Bookings</Text></TouchableOpacity>
-            <TouchableOpacity onPress={navigatePlaces} style={styles.pageTextStyle}><Text style={styles.pageText}>Your Places</Text></TouchableOpacity>
+            <View>
+                <TouchableOpacity onPress={navigateBookings} style={styles.pageTextStyle}><Text style={styles.pageText}>Your Bookings</Text></TouchableOpacity>
+                <TouchableOpacity onPress={navigatePlaces} style={styles.pageTextStyle}><Text style={styles.pageText}>Your Places</Text></TouchableOpacity>
+            </View>
             <TouchableOpacity onPress={handelLogout} style={styles.buttonStyle}><Text style={styles.btn_text}>Logout</Text></TouchableOpacity>
         </SafeAreaView>
     )
@@ -42,7 +44,6 @@ const styles = StyleSheet.create({
         width: widthPercentageToDP(100),
         height: '100%',
         alignItems: 'center',
-        gap: 20,
         padding: 16,
     },
     avatarImg: {
@@ -66,19 +67,21 @@ const styles = StyleSheet.create({
     },
     pageTextStyle: {
         width: widthPercentageToDP(90),
-        textAlign: 'center',
+        textAlign: 'right',
         display: 'flex',
         alignItems: 'center',
         backgroundColor: '#fff',
         color: red,
+        borderBottomColor: '#999',
+        borderBottomWidth: 1,
     },
     btn_text: {
         color: '#fff',
         borderRadius: 4,
         padding: 10,
         fontSize: 18,
-        textTransform:'uppercase',
-        fontWeight:'800'
+        textTransform: 'uppercase',
+        fontWeight: '800'
     },
     pageText: {
         borderRadius: 4,
@@ -90,9 +93,20 @@ const styles = StyleSheet.create({
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        width: '100%',
+        width: widthPercentageToDP(90),
         height: 'auto',
         padding: 16,
+        borderBottomColor: '#999',
+        borderBottomWidth: 1,
         gap: 8,
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 4,
+        },
+        shadowOpacity: 0.30,
+        shadowRadius: 4.65,
+
+        elevation: 8,
     }
 })

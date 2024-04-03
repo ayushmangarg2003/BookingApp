@@ -13,7 +13,6 @@
 - react-native-snap-carousel
 
 ToDo:
-Home pe Categories Add karni hai
 Booking Card Design Improve Karna hai
 Single Place Screen Design Improve Karna hai
 Booking Widget Banana hai
