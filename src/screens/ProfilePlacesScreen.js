@@ -37,7 +37,7 @@ const ProfilePlacesScreen = () => {
 
 
   const handelAddClick = () => {
-    navigation.navigate('addPlace')
+    navigation.navigate('addPlace', { user: authState.email })
   }
 
   return (
