@@ -56,10 +56,15 @@ const SinglePlaceScreen = (props) => {
   useEffect(() => {
     axios.get(`${backendLink}/review/getReview`).then(response => {
       const { data } = response;
-      setFiltered(review.filter(checkPlace))
+      const temp = review.filter(checkPlace)
       setReview(data.reverse())
-      if (review.filter(checkPlace).length > 0) {
+      if (temp.length > 3) {
         setShowRev(true)
+        setFiltered(temp.slice(0, 3))
+      }
+      else if (temp.length > 0) {
+        setShowRev(true)
+        setFiltered(temp)
       }
     })
   }, [review]);
@@ -148,7 +153,7 @@ const styles = StyleSheet.create({
   bottomSection: {
     borderRadius: 30,
     paddingHorizontal: 12,
-    paddingVertical:20,
+    paddingVertical: 20,
     position: 'relative',
     backgroundColor: '#fff',
     top: -20,
