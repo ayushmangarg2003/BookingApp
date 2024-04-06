@@ -2,7 +2,7 @@ import { StyleSheet, Text, View } from 'react-native'
 import React, { useContext, useState } from 'react'
 import { useNavigation } from '@react-navigation/native'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { backendLink, black, gray, white, errorColor, red } from '../constants/constants'
+import { backendLink, gray, white, red } from '../constants/constants'
 import { Button, TextInput } from '@react-native-material/core'
 import axios from 'axios'
 import { heightPercentageToDP, widthPercentageToDP } from 'react-native-responsive-screen'
@@ -21,6 +21,15 @@ const RegisterScreen = () => {
 
   const handleRegister = () => {
     setLoading(true)
+    Snackbar.show({
+      text: 'Hello world',
+      duration: Snackbar.LENGTH_INDEFINITE,
+      action: {
+        text: 'UNDO',
+        textColor: 'green',
+        onPress: () => { /* Do something. */ },
+      },
+    });
 
     const user = { name: name, email: email, password: password }
     axios.post(`${backendLink}/user/register`, user)

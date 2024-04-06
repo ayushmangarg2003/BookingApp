@@ -3,11 +3,14 @@ import { Image, TextInput, TouchableOpacity } from "react-native"
 import { StyleSheet, Text, View } from 'react-native'
 import React, { useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { backendLink } from "../constants/constants.js"
+import { backendLink, red } from "../constants/constants.js"
 import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
-import CheckBox from 'react-native-check-box'
+import BouncyCheckbox from "react-native-bouncy-checkbox";
 
+/* 
+
+*/
 const AddPlaceFrom = (props) => {
 
   const [title, setTitle] = useState('');
@@ -17,24 +20,41 @@ const AddPlaceFrom = (props) => {
   const [description, setDescription] = useState('');
   const [perks, setPerks] = useState([]);
   const [extraInfo, setExtraInfo] = useState('');
-  const [checkIn, setCheckIn] = useState(0);
-  const [checkOut, setCheckOut] = useState(0);
-  const [maxGuests, setMaxGuests] = useState(1);
-  const [price, setPrice] = useState(0);
-  const [length, setLength] = useState(0);
+  const [checkIn, setCheckIn] = useState('0');
+  const [checkOut, setCheckOut] = useState('0');
+  const [maxGuests, setMaxGuests] = useState('0');
+  const [price, setPrice] = useState('0');
+  const [length, setLength] = useState('0');
+
+  const [perk1, setPerk1] = useState(false);
+  const [perk2, setPerk2] = useState(false);
+  const [perk3, setPerk3] = useState(false);
+  const [perk4, setPerk4] = useState(false);
 
   const navigation = useNavigation()
   const owner = props.route.params.user;
 
 
-  // const handleCbClick = (checked, name) => {
-  //   if (checked) {
-  //     setPerks([...perks, name]);
-  //   } else {
-  //     setPerks([...perks.filter(selectedName => selectedName !== name)]);
-  //   }
-  // }
+  const handleCbClick = (perknum, perkname) => {
+    if (perknum == 1) {
+      setPerk1(!perk1)
+      !perk1 ? (setPerks([...perks, perkname])) : (setPerks([...perks.filter(selectedName => selectedName !== perkname)]))
+    }
+    if (perknum == 2) {
+      setPerk2(!perk2)
+      !perk2 ? (setPerks([...perks, perkname])) : (setPerks([...perks.filter(selectedName => selectedName !== perkname)]))
+    }
+    if (perknum == 3) {
+      setPerk3(!perk3)
+      !perk3 ? (setPerks([...perks, perkname])) : (setPerks([...perks.filter(selectedName => selectedName !== perkname)]))
+    }
+    if (perknum == 4) {
+      setPerk4(!perk4)
+      !perk4 ? (setPerks([...perks, perkname])) : (setPerks([...perks.filter(selectedName => selectedName !== perkname)]))
+    }
+  }
 
+  console.log(perks);
 
   const handelPhotoDevice = async (e) => {
     const file = e.target.files[0]
@@ -120,7 +140,7 @@ const AddPlaceFrom = (props) => {
             <Text>House Rules Etc</Text>
             <TextInput value={extraInfo} placeholder='Max Characters: 500' onChangeText={(text) => setExtraInfo(text)} />
           </View>
-
+          {/* Images */}
           <View>
             <Text>Images</Text>
             <Text>More = Better</Text>
@@ -152,25 +172,45 @@ const AddPlaceFrom = (props) => {
             </View>
 
           </View>
-
+          {/* Perks */}
           <View>
             <Text>Perks</Text>
             <Text>Checkmark Perks</Text>
             <View>
               <View>
-                {/* <input checked={perks.includes('wifi')} name="wifi" onChange={handleCbClick} type="checkbox" /> */}
+                <BouncyCheckbox
+                  disableBuiltInState
+                  isChecked={perk1}
+                  onPress={() => handleCbClick(1, 'wifi')}
+                  fillColor={red}
+                />
                 <Text>WiFi</Text>
               </View>
               <View>
-                {/* <input type="checkbox" checked={perks.includes('parking')} name="parking" onChange={handleCbClick} /> */}
+                <BouncyCheckbox
+                  disableBuiltInState
+                  isChecked={perk2}
+                  onPress={() => handleCbClick(2, 'parking')}
+                  fillColor={red}
+                />
                 <Text>Parking</Text>
               </View>
               <View>
-                {/* <input type="checkbox" checked={perks.includes('pool')} name="pool" onChange={handleCbClick} /> */}
+                <BouncyCheckbox
+                  disableBuiltInState
+                  isChecked={perk3}
+                  onPress={() => handleCbClick(3, 'pool')}
+                  fillColor={red}
+                />
                 <Text>Pool</Text>
               </View>
               <View>
-                {/* <input type="checkbox" checked={perks.includes('tv')} name="tv" onChange={handleCbClick} /> */}
+                <BouncyCheckbox
+                  disableBuiltInState
+                  isChecked={perk4}
+                  onPress={() => handleCbClick(4, 'tv')}
+                  fillColor={red}
+                />
                 <Text>TV</Text>
               </View>
             </View>

@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View } from 'react-native'
-import { backendLink, gray, white, errorColor, red } from '../constants/constants'
+import { backendLink, gray, white, red } from '../constants/constants'
 import { useNavigation } from '@react-navigation/native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { Button, TextInput } from '@react-native-material/core'
