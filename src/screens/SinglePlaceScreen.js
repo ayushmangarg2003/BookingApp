@@ -1,12 +1,13 @@
 import { Dimensions, Image, ScrollView, StyleSheet, Text, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { heightPercentageToDP, widthPercentageToDP } from 'react-native-responsive-screen'
+import { widthPercentageToDP } from 'react-native-responsive-screen'
 import axios from 'axios'
 import { backendLink, red, white } from "../constants/constants"
 import Carousel from 'react-native-snap-carousel';
 import BookingWidget from '../components/BookingWidget'
 import Loader from "../components/Loader"
+
 
 export const SLIDER_WIDTH = Dimensions.get('window').width;
 export const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 1);

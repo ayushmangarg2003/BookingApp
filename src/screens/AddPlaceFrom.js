@@ -1,4 +1,4 @@
-import { Image, TextInput, TouchableOpacity } from "react-native"
+import { Image, ScrollView, TextInput, TouchableOpacity } from "react-native"
 
 import { StyleSheet, Text, View } from 'react-native'
 import React, { useState } from 'react'
@@ -7,10 +7,8 @@ import { backendLink, red } from "../constants/constants.js"
 import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
 import BouncyCheckbox from "react-native-bouncy-checkbox";
+import { heightPercentageToDP } from "react-native-responsive-screen"
 
-/* 
-
-*/
 const AddPlaceFrom = (props) => {
 
   const [title, setTitle] = useState('');
@@ -54,8 +52,6 @@ const AddPlaceFrom = (props) => {
     }
   }
 
-  console.log(perks);
-
   const handelPhotoDevice = async (e) => {
     const file = e.target.files[0]
     const base64 = await convertToBase64(file);
@@ -83,13 +79,14 @@ const AddPlaceFrom = (props) => {
       return
     }
     else if (price <= 0) {
-      alert("Enter Valid Price")
+      alert("Price should be greater than ₹0")
       return
     }
     else if (addedPhotos.length == 0) {
       alert("Add Atleast one Photo")
       return
     }
+
     const placeData = {
       owner, title, address, addedPhotos,
       description, perks, extraInfo,
@@ -112,36 +109,41 @@ const AddPlaceFrom = (props) => {
     })
   }
 
+
   return (
     <SafeAreaView>
-      <View>
-        <View>
-
-          <View>
+      <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
+        <View style={styles.formContainer}>
+          {/* Title */}
+          <View style={styles.inputContainer}>
             <Text>Title</Text>
             <Text>Title Should be Short but Catchy</Text>
             <TextInput placeholder='Max Characters: 50' value={title} onChangeText={(text) => setTitle(text)} maxLength={50} />
           </View>
 
-          <View>
+          {/* Address */}
+          <View style={styles.inputContainer}>
             <Text>Address</Text>
             <Text>Address of the Place</Text>
             <TextInput placeholder="Ex: Delhi, India" value={address} onChangeText={(text) => setAddress(text)} />
           </View>
 
-          <View>
+          {/* Description */}
+          <View style={styles.inputContainer}>
             <Text>Description</Text>
             <Text>Description of the Place</Text>
             <TextInput value={description} placeholder='Max Characters: 500' onChangeText={(text) => setDescription(text)} maxLength={500} />
           </View>
 
-          <View>
+          {/* Extra Information */}
+          <View style={styles.inputContainer}>
             <Text>Extra Information</Text>
             <Text>House Rules Etc</Text>
             <TextInput value={extraInfo} placeholder='Max Characters: 500' onChangeText={(text) => setExtraInfo(text)} />
           </View>
+
           {/* Images */}
-          <View>
+          <View style={styles.inputContainer}>
             <Text>Images</Text>
             <Text>More = Better</Text>
             <View>
@@ -172,12 +174,13 @@ const AddPlaceFrom = (props) => {
             </View>
 
           </View>
+
           {/* Perks */}
-          <View>
+          <View style={styles.inputContainer}>
             <Text>Perks</Text>
             <Text>Checkmark Perks</Text>
-            <View>
-              <View>
+            <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', padding: 4, }}>
+              <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
                 <BouncyCheckbox
                   disableBuiltInState
                   isChecked={perk1}
@@ -186,7 +189,7 @@ const AddPlaceFrom = (props) => {
                 />
                 <Text>WiFi</Text>
               </View>
-              <View>
+              <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
                 <BouncyCheckbox
                   disableBuiltInState
                   isChecked={perk2}
@@ -195,7 +198,7 @@ const AddPlaceFrom = (props) => {
                 />
                 <Text>Parking</Text>
               </View>
-              <View>
+              <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
                 <BouncyCheckbox
                   disableBuiltInState
                   isChecked={perk3}
@@ -204,7 +207,7 @@ const AddPlaceFrom = (props) => {
                 />
                 <Text>Pool</Text>
               </View>
-              <View>
+              <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
                 <BouncyCheckbox
                   disableBuiltInState
                   isChecked={perk4}
@@ -215,29 +218,32 @@ const AddPlaceFrom = (props) => {
               </View>
             </View>
           </View>
-
-          <View>
+          {/* CheckIn */}
+          <View style={styles.inputContainer}>
             <Text>CheckIn</Text>
             <View>
               <TextInput keyboardType='number-pad' value={checkIn} placeholder='Check In [0-24]' onChangeText={(text) => setCheckIn(text)} maxLength={2} />
             </View>
           </View>
 
-          <View>
+          {/* CheckOut */}
+          <View style={styles.inputContainer}>
             <Text>CheckOut</Text>
             <View>
               <TextInput keyboardType='number-pad' value={checkOut} placeholder='Check Out [0-24]' onChangeText={(text) => setCheckOut(text)} maxLength={2} />
             </View>
           </View>
 
-          <View>
+          {/* Max Guests */}
+          <View style={styles.inputContainer}>
             <Text>Maximum Guests</Text>
             <View>
               <TextInput keyboardType='number-pad' value={maxGuests} placeholder='Max Guests [0-99]' onChangeText={(text) => setMaxGuests(text)} maxLength={2} />
             </View>
           </View>
 
-          <View>
+          {/* Price */}
+          <View style={styles.inputContainer}>
             <Text>Price Per Night</Text>
             <Text>In Rupees</Text>
             <View>
@@ -245,16 +251,33 @@ const AddPlaceFrom = (props) => {
             </View>
           </View>
 
-          <TouchableOpacity onPress={handelSubmit}>
+          {/* Submit Button */}
+          <TouchableOpacity style={styles.inputContainer} onPress={handelSubmit}>
             <Text>Save</Text>
           </TouchableOpacity>
 
         </View>
-      </View>
+      </ScrollView>
     </SafeAreaView>
   )
 }
 
 export default AddPlaceFrom
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+  scrollView: {
+    height: heightPercentageToDP(100),
+  },
+  formContainer: {
+    display: 'flex',
+    gap: 12,
+    marginVertical: 20,
+  },
+  inputContainer: {
+    width: '95%',
+    alignSelf: 'center',
+    padding: 4,
+    borderWidth: 1,
+    borderColor: 'rgba(0,0,0,0.16)',
+  }
+})
