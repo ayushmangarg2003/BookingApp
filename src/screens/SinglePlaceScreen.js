@@ -1,4 +1,4 @@
-import { Dimensions, Image, ScrollView, StyleSheet, Text, View } from 'react-native'
+import { Dimensions, Image, ScrollView, StyleSheet, Text, View, TouchableOpacity } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { widthPercentageToDP } from 'react-native-responsive-screen'
@@ -60,15 +60,18 @@ const SinglePlaceScreen = (props) => {
       const temp = review.filter(checkPlace)
       setReview(data.reverse())
       if (temp.length > 3) {
-        setShowRev(true)
         setFiltered(temp.slice(0, 3))
       }
       else if (temp.length > 0) {
-        setShowRev(true)
         setFiltered(temp)
       }
     })
-  }, [review]);
+  }, [showRev]);
+
+  const handelReviews = () => {
+    setShowRev(!showRev)
+
+  }
 
   const checkPlace = (review) => {
     return review.place == place._id
@@ -110,14 +113,18 @@ const SinglePlaceScreen = (props) => {
               }
             </View>
 
-            <BookingWidget _id={place._id} price={place.price} />
+            <BookingWidget place={place} />
 
             <Text style={styles.title}>Extra Info.</Text>
             <Text style={styles.body}>{place.extraInfo}</Text>
+
+
             <View>
               {
-                !showRev ? (<></>) : (
+                !showRev ? (<TouchableOpacity style={styles.reviewToggleButton} onPress={handelReviews}><Text style={styles.reviewToggleText}>See Reviews</Text></TouchableOpacity>
+                ) : (
                   <>
+                    <TouchableOpacity style={styles.reviewToggleButton} onPress={handelReviews}><Text style={styles.reviewToggleText}>Hide Reviews</Text></TouchableOpacity>
                     <View>
                       <Text style={styles.title}>Reviews</Text>
                     </View>
@@ -134,7 +141,6 @@ const SinglePlaceScreen = (props) => {
                   </>
                 )
               }
-
             </View>
           </View>
 
@@ -154,17 +160,17 @@ const styles = StyleSheet.create({
   bottomSection: {
     borderRadius: 30,
     paddingHorizontal: 12,
-    paddingVertical: 20,
+    paddingTop: 12,
     position: 'relative',
     backgroundColor: '#fff',
-    top: -20,
+    top: -30,
   },
   img: {
     width: 120,
     height: 120
   },
   title: {
-    fontSize: 20,
+    fontSize: 24,
     fontWeight: '800',
   },
   address: {
@@ -179,13 +185,16 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     gap: 12,
   },
+  body:{
+    
+  },
   perk: {
     backgroundColor: red,
     color: white,
     borderRadius: 4,
     fontWeight: '800',
     textAlign: 'center',
-    paddingVertical: 12,
+    paddingVertical: 4,
     width: widthPercentageToDP(20),
     textTransform: 'capitalize'
   },
@@ -219,5 +228,15 @@ const styles = StyleSheet.create({
     width: "90%",
     padding: 8,
     fontSize: 12,
+  },
+  reviewToggleButton: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: 4,
+    padding: 12,
+  },
+  reviewToggleText: {
+    fontSize: 16,
+    fontWeight: '600',
   },
 })

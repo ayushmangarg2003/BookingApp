@@ -4,7 +4,8 @@ import axios from 'axios'
 import { backendLink, red, white } from '../constants/constants'
 import dayjs from "dayjs";
 import { ArrowLongRightIcon } from 'react-native-heroicons/outline';
-import { heightPercentageToDP, widthPercentageToDP } from 'react-native-responsive-screen';
+import { widthPercentageToDP } from 'react-native-responsive-screen';
+import { LinearGradient } from 'expo-linear-gradient';
 
 const BookingCard = (props) => {
   const [place, setPlace] = useState({
@@ -17,12 +18,14 @@ const BookingCard = (props) => {
   const handelReviewSubmit = (e) => {
     e.preventDefault()
     const data = { place: booking.place, review: review }
+    if (review.length < 100) {
+      alert("Reviews should have at least 100 characters")
+      return
+    }
     try {
       axios.post(`${backendLink}/review/addReview`, data).then(() => {
         setReview("")
-        
       })
-
     } catch (error) {
       console.log("Some Error Occured");
     }
@@ -40,33 +43,27 @@ const BookingCard = (props) => {
     {
       loading ? (<></>) :
         (
-          <View style={styles.bookingCardParent}>
-            {/* <ToastContainer position="bottom-center" /> */}
-            <View style={styles.t_image}>
-              <Image style={styles.image} source={{ uri: place.photos[0] }} />
-            </View >
-            <View style={styles.bookingCardBottom}>
-              <View className="card-right-details">
-                <View className="upper-text">
-                  <Text>{place.title}</Text>
-                  <Text>{place.address}</Text>
-                </View>
-                <View style={styles.bookingTimings}>
-                  <Text>{dayjs(new Date(booking.checkIn)).format("DD/MM/YYYY")}</Text>
-                  <Text><ArrowLongRightIcon size={30} strokeWidth={1} color={'#111'} /></Text>
-                  <Text>{dayjs(new Date(booking.checkOut)).format("DD/MM/YYYY")}</Text>
-                </View>
-                <View className="bottom-details">
-                  <Text>{booking.numberOfGuests}</Text>
-                  <Text>₹{booking.price}</Text>
-                </View>
-              </View>
-              <View style={styles.addReview}>
-                <TextInput value={review} onChangeText={(text) => setReview(text)} placeholder='Review' color={red} style={styles.textInput} />
-                <TouchableOpacity style={styles.revButton} onPress={handelReviewSubmit}>
-                  <Text style={styles.buttonText}>Submit</Text>
-                </TouchableOpacity>
-              </View>
+          <View style={styles.desCard}>
+            <Image style={styles.desImage} source={{ uri: place.photos[0] }} />
+            <LinearGradient
+              colors={['rgba(0,0,0,0.6)', 'transparent', 'transparent', 'rgba(0,0,0,0.6)']}
+              style={styles.linearGradient}
+              start={{ x: 0.5, y: 0 }}
+              end={{ x: 0.5, y: 1 }}
+            />
+            <Text style={styles.desTitle}>{place.title.trim()}</Text>
+            <Text style={styles.desAddress}>{place.address.trim()}</Text>
+            <View style={styles.bookingTimings}>
+              <Text style={styles.desSub}>{dayjs(new Date(booking.checkIn)).format("DD/MM/YYYY").trim()}</Text>
+              <Text style={styles.desSub}><ArrowLongRightIcon size={30} strokeWidth={1} color={'#fff'} /></Text>
+              <Text style={styles.desSub}>{dayjs(new Date(booking.checkOut)).format("DD/MM/YYYY").trim()}</Text>
+            </View>
+            {/* <Text style={styles.desTitle}>₹{booking.price}</Text> */}
+            <View style={styles.addReview}>
+              <TextInput value={review} onChangeText={(text) => setReview(text)} placeholder='Review' color={white} placeholderTextColor={'#ccc'} style={styles.textInput} />
+              <TouchableOpacity style={styles.revButton} onPress={handelReviewSubmit}>
+                <Text style={styles.buttonText}>Add</Text>
+              </TouchableOpacity>
             </View>
           </View >
         )
@@ -78,61 +75,95 @@ const BookingCard = (props) => {
 export default BookingCard
 
 const styles = StyleSheet.create({
-  bookingCardParent: {
-    width: widthPercentageToDP(90),
-    height: heightPercentageToDP(60),
+  desCard: {
+    width: widthPercentageToDP(95),
+    height: widthPercentageToDP(100),
+    display: 'flex',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
     alignSelf: 'center',
-    backgroundColor: "#fff",
+    position: 'relative',
+    marginBottom: 20,
+    gap: 8,
+    position: 'relative',
+  },
+  desImage: {
+    width: '100%',
+    height: '100%',
+    position: 'absolute',
+  },
+  linearGradient: {
+    width: '100%',
+    height: '100%',
+    position: 'absolute',
+    bottom: 0,
+  },
+  desSub: {
+    fontSize: 12,
+    textAlign: 'left',
+    color: '#fff',
+    fontWeight: '600',
+  },
+  desTitle: {
+    fontSize: 16,
+    textAlign: 'left',
+    color: '#fff',
+    width: '100%',
+    position: 'absolute',
+    top: 0,
     padding: 8,
-    marginBottom: 12,
-    borderRadius: 8
+  },
+  desAddress: {
+    fontSize: 16,
+    textAlign: 'left',
+    color: '#fff',
+    width: '100%',
+    position: 'absolute',
+    top: 20,
+    padding: 8,
   },
   bookingTimings: {
     display: 'flex',
     flexDirection: 'row',
     gap: 12,
-    alignItems: 'center'
-  },
-  t_image: {
+    alignItems: 'center',
+    position: 'absolute',
+    top: 40,
     width: '100%',
-    height: '60%',
-    borderRadius: 12,
+    padding: 8,
   },
+
   bookingCardBottom: {
     height: '40%',
     display: 'flex',
     justifyContent: 'space-between',
   },
-  image: {
-    width: '100%',
-    height: '100%',
-    objectFit: 'cover',
-    borderRadius: 12,
-  },
   addReview: {
+    paddingHorizontal: 8,
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+    width: '100%'
   },
   textInput: {
-    borderWidth: 4,
+    borderWidth: 2,
     height: 32,
-    borderTopColor: 'white',
-    borderLeftColor: 'white',
-    borderRightColor: 'white',
-    borderBottomColor: red,
-    width: '74%',
+    borderTopColor: 'transparent',
+    borderLeftColor: 'transparent',
+    borderRightColor: 'transparent',
+    borderBottomColor: 'red',
+    width: '75%',
     padding: 4,
   },
   revButton: {
     backgroundColor: red,
-    width: '24%',
-    padding: 4,
+    paddingHorizontal: 12,
     height: 32,
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
+    width: '20%'
   },
   buttonText: {
     color: white,
