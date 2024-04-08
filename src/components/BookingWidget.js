@@ -4,9 +4,17 @@ import { useNavigation } from '@react-navigation/native';
 import dayjs from 'dayjs';
 import { AuthContext } from '../context/AuthContext';
 import axios from 'axios';
-import { backendLink } from '../constants/constants';
+import { backendLink, red, white } from '../constants/constants';
+import DatePicker from 'react-native-modern-datepicker';
 
 const BookingWidget = (props) => {
+  const [checkIn, setCheckIn] = useState("");
+  const [checkOut, setCheckOut] = useState("");
+  const [numberOfGuests, setNumberOfGuests] = useState(1);
+  const [name, setName] = useState('');
+  const [phone, setPhone] = useState('');
+  const navigation = useNavigation()
+  const [error, setError] = useState("")
   const [authState, setAuthState] = useContext(AuthContext);
   const place = props.place
 
@@ -14,6 +22,7 @@ const BookingWidget = (props) => {
   if (checkIn && checkOut) {
     numberOfNights = dayjs(checkOut).diff(dayjs((checkIn))) / (86400000);
   }
+
   const bookThisPlace = async () => {
     if (!authState.email) {
       setError("Login or Signup First");
@@ -33,13 +42,15 @@ const BookingWidget = (props) => {
     }
   }
 
-  const [checkIn, setCheckIn] = useState('');
-  const [checkOut, setCheckOut] = useState('');
-  const [numberOfGuests, setNumberOfGuests] = useState(1);
-  const [name, setName] = useState('');
-  const [phone, setPhone] = useState('');
-  const navigation = useNavigation()
-  const [error, setError] = useState("")
+  const [showCheckin, setShowCheckin] = useState(false)
+  const handelShowCheckIn = () => {
+    setShowCheckin(!showCheckin)
+  }
+  const [showCheckout, setShowCheckout] = useState(false)
+  const handelShowCheckOut = () => {
+    setShowCheckout(!showCheckout)
+  }
+
 
   return (
     <View>
@@ -50,23 +61,53 @@ const BookingWidget = (props) => {
         <View>
           <View>
             <View>
-              <Text>Check in:</Text>
-              {/* <input type="date"
-                value={checkIn}
-                required={true}
-                onChange={ev => setCheckIn(ev.target.value)} /> */}
+              <Text>Check in: {checkIn}</Text>
+              {
+                showCheckin ? (
+                  <View>
+                    <TouchableOpacity onPress={handelShowCheckIn}><Text>X</Text></TouchableOpacity>
+                    <DatePicker
+                      mode="calendar"
+                      options={{
+                        backgroundColor: '#f6f6f6',
+                        mainColor: red,
+                        selectedTextColor: white,
+                      }}
+                      style={{ borderRadius: 10 }}
+                      onSelectedChange={date => setCheckIn(date)}
+                    />
+                  </View>
+                ) : (<TouchableOpacity onPress={handelShowCheckIn}><Text>Hello</Text></TouchableOpacity>
+                )
+              }
             </View>
             <View>
-              <Text>Check out:</Text>
-              {/* <input type="date" required={true} value={checkOut}
-                onChange={ev => setCheckOut(ev.target.value)} /> */}
+              <Text>Check out: {checkOut}</Text>
+              {
+                showCheckout ? (
+                  <View>
+                    <TouchableOpacity onPress={handelShowCheckOut}><Text>X</Text></TouchableOpacity>
+                    <DatePicker
+                      mode="calendar"
+                      options={{
+                        backgroundColor: '#f6f6f6',
+                        mainColor: red,
+                        selectedTextColor: white,
+                      }}
+                      style={{ borderRadius: 10 }}
+                      onSelectedChange={date => setCheckOut(date)}
+                    />
+                  </View>
+                ) : (<TouchableOpacity onPress={handelShowCheckOut}><Text>Hello</Text></TouchableOpacity>
+                )
+              }
             </View>
           </View>
           <View>
             <Text>Number of guests:</Text>
             <TextInput keyboardType='number-pad' value={numberOfGuests} placeholder={'Max: 99'} onChangeText={(text) => setNumberOfGuests(text)} maxLength={2} />
           </View>
-          {numberOfNights == 0 && (
+          {numberOfNights != 0 && (
             <View>
               <View>
                 <Text>Your full name:</Text>
@@ -74,7 +115,7 @@ const BookingWidget = (props) => {
               </View>
               <View>
                 <Text>Phone number:</Text>
-                <TextInput keyboardType='number-pad' value={phone} placeholder='9876543210' onChangeText={(text) => setPhone(text)} maxLength={10} />
+                <TextInput keyboardType='number-pad' value={`${phone}`} placeholder='9876543210' onChangeText={(text) => setPhone(text)} maxLength={10} />
               </View>
             </View>
           )}
