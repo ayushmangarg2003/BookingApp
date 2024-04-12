@@ -6,6 +6,7 @@ import { AuthContext } from '../context/AuthContext';
 import axios from 'axios';
 import { backendLink, red, white } from '../constants/constants';
 import DatePicker from 'react-native-modern-datepicker';
+import { heightPercentageToDP, widthPercentageToDP } from 'react-native-responsive-screen';
 
 const BookingWidget = (props) => {
   const [checkIn, setCheckIn] = useState("");
@@ -32,7 +33,6 @@ const BookingWidget = (props) => {
         place: place._id,
         price: numberOfNights * place.price,
       });
-      console.log("RESPONSE", response);
       if (response.data.error) {
         setError(response.data.error)
       }
@@ -53,85 +53,86 @@ const BookingWidget = (props) => {
 
 
   return (
-    <View>
-      <View>
-        <View>
-          <Text>Price: ₹{place.price} / per night </Text>
+    <View style={styles.container}>
+
+      <View style={styles.priceParent}>
+        <Text style={styles.priceText}>Price Per Day : ₹{place.price} only </Text>
+      </View>
+
+      <View style={styles.detailsParent}>
+        <View style={styles.basicDetailsParent}>
+          <View style={styles.checkView}>
+            {
+              showCheckin ? (
+                <View style={styles.calanderPicker}>
+                  <TouchableOpacity onPress={handelShowCheckIn}><Text>X</Text></TouchableOpacity>
+                  <DatePicker
+                    mode="calendar"
+                    options={{
+                      backgroundColor: '#f6f6f6',
+                      mainColor: red,
+                      selectedTextColor: white,
+                    }}
+                    style={styles.calander}
+                    onSelectedChange={date => setCheckIn(date)}
+                  />
+                </View>
+              ) : (<TouchableOpacity onPress={handelShowCheckIn}><Text>Check in: {checkIn} </Text></TouchableOpacity>
+              )
+            }
+          </View>
+          <View style={styles.checkView}>
+            {
+              showCheckout ? (
+                <View style={styles.calanderPicker}>
+                  <TouchableOpacity onPress={handelShowCheckOut}><Text>X</Text></TouchableOpacity>
+                  <DatePicker
+                    mode="calendar"
+                    options={{
+                      backgroundColor: '#f6f6f6',
+                      mainColor: red,
+                      selectedTextColor: white,
+                    }}
+                    style={styles.calander}
+                    onSelectedChange={date => setCheckOut(date)}
+                  />
+                </View>
+              ) : (<TouchableOpacity onPress={handelShowCheckOut}><Text>Check out : {checkOut}</Text></TouchableOpacity>
+              )
+            }
+          </View>
         </View>
-        <View>
-          <View>
+
+        {numberOfNights != 0 && (
+          <View style={styles.extraDetailsParent}>
             <View>
-              <Text>Check in: {checkIn}</Text>
-              {
-                showCheckin ? (
-                  <View>
-                    <TouchableOpacity onPress={handelShowCheckIn}><Text>X</Text></TouchableOpacity>
-                    <DatePicker
-                      mode="calendar"
-                      options={{
-                        backgroundColor: '#f6f6f6',
-                        mainColor: red,
-                        selectedTextColor: white,
-                      }}
-                      style={{ borderRadius: 10 }}
-                      onSelectedChange={date => setCheckIn(date)}
-                    />
-                  </View>
-                ) : (<TouchableOpacity onPress={handelShowCheckIn}><Text>Hello</Text></TouchableOpacity>
-                )
-              }
+              <Text>Number of guests:</Text>
+              <TextInput keyboardType='number-pad' value={numberOfGuests} placeholder={'Max: 99'} onChangeText={(text) => setNumberOfGuests(text)} maxLength={2} />
             </View>
             <View>
-              <Text>Check out: {checkOut}</Text>
-              {
-                showCheckout ? (
-                  <View>
-                    <TouchableOpacity onPress={handelShowCheckOut}><Text>X</Text></TouchableOpacity>
-                    <DatePicker
-                      mode="calendar"
-                      options={{
-                        backgroundColor: '#f6f6f6',
-                        mainColor: red,
-                        selectedTextColor: white,
-                      }}
-                      style={{ borderRadius: 10 }}
-                      onSelectedChange={date => setCheckOut(date)}
-                    />
-                  </View>
-                ) : (<TouchableOpacity onPress={handelShowCheckOut}><Text>Hello</Text></TouchableOpacity>
-                )
-              }
+              <Text>Your full name:</Text>
+              <TextInput placeholder='Max Characters: 50' value={name} onChangeText={(text) => setName(text)} maxLength={50} />
+            </View>
+            <View>
+              <Text>Phone number:</Text>
+              <TextInput keyboardType='number-pad' value={`${phone}`} placeholder='9876543210' onChangeText={(text) => setPhone(text)} maxLength={10} />
             </View>
           </View>
-          <View>
-            <Text>Number of guests:</Text>
-            <TextInput keyboardType='number-pad' value={numberOfGuests} placeholder={'Max: 99'} onChangeText={(text) => setNumberOfGuests(text)} maxLength={2} />
-          </View>
-          {numberOfNights != 0 && (
-            <View>
-              <View>
-                <Text>Your full name:</Text>
-                <TextInput placeholder='Max Characters: 50' value={name} onChangeText={(text) => setName(text)} maxLength={50} />
-              </View>
-              <View>
-                <Text>Phone number:</Text>
-                <TextInput keyboardType='number-pad' value={`${phone}`} placeholder='9876543210' onChangeText={(text) => setPhone(text)} maxLength={10} />
-              </View>
-            </View>
+        )}
+      </View>
+
+      <TouchableOpacity style={styles.bookBtnParent} onPress={bookThisPlace}>
+        <Text style={styles.btnText} >Book Now
+          {numberOfNights > 0 && (
+            <Text> at ₹{numberOfNights * place.price}</Text>
           )}
-        </View>
-        <TouchableOpacity onPress={bookThisPlace}>
-          <Text>Book Now
-            {numberOfNights > 0 && (
-              <Text> at ₹{numberOfNights * place.price}</Text>
-            )}
-          </Text>
-        </TouchableOpacity>
-        <View>
-          <Text>
-            {error}
-          </Text>
-        </View>
+        </Text>
+      </TouchableOpacity>
+
+      <View style={styles.errorParent}>
+        <Text style={styles.errorText}>
+          {error}
+        </Text>
       </View>
     </View>
   )
@@ -139,4 +140,67 @@ const BookingWidget = (props) => {
 
 export default BookingWidget
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+  container: {
+    width: '100%',
+    marginVertical: 12,
+    padding: 12,
+    borderRadius: 4,
+    shadowColor: "rgba(0,0,0,0.5)",
+    shadowOffset: {
+      width: 0,
+      height: 0.5,
+    },
+    shadowOpacity: 0.22,
+    shadowRadius: 2.22,
+    elevation: 3,
+    display: 'flex',
+    gap: 20,
+    alignItems: 'center'
+  },
+  priceParent: {
+    width: '100%',
+    display: 'flex',
+    alignItems: 'center'
+  },
+  priceText: {
+    fontSize: 20,
+  },
+  calanderPicker: {
+    width: '100%'
+  },
+  calander: {
+    borderRadius: 10,
+    zIndex: -10,
+  },
+  detailsParent: {
+    width: '100%',
+  },
+  basicDetailsParent: {
+    display: 'flex',
+    width: '100%',
+  },
+  checkView: {
+    width: '100%',
+    display: 'flex',
+    flexDirection: 'row',
+  },
+  bookBtnParent: {
+    backgroundColor: red,
+    width: '100%',
+    display: 'flex',
+    alignItems: 'center',
+    padding: 12,
+    borderRadius: 4,
+  },
+  btnText: {
+    color: '#fff',
+    fontSize:16,
+    fontWeight:'600'
+  },
+  errorText: {
+    color: red,
+    position: 'relative',
+    top: -10,
+  }
+})

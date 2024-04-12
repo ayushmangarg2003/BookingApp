@@ -100,9 +100,9 @@ const SinglePlaceScreen = (props) => {
 
 
             <View style={styles.numbers}>
-              <Text style={styles.number}>Max Guests: {place.maxGuests}</Text>
-              <Text style={styles.number}>Check In : {place.checkIn}</Text>
-              <Text style={styles.number}>Check Out : {place.checkOut}</Text>
+              <Text style={styles.number}>Max Guests: {place.maxGuests.toString()}</Text>
+              <Text style={styles.number}>Check In : {place.checkIn.toString()}</Text>
+              <Text style={styles.number}>Check Out : {place.checkOut.toString()}</Text>
             </View>
 
             <View style={styles.perks}>
