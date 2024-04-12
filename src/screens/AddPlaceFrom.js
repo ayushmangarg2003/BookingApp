@@ -1,4 +1,4 @@
-import { Image, ScrollView, TextInput, TouchableOpacity } from "react-native"
+import { Alert, Image, ScrollView, TextInput, TouchableOpacity } from "react-native"
 import { StyleSheet, Text, View } from 'react-native'
 import React, { useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
@@ -7,12 +7,13 @@ import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
 import BouncyCheckbox from "react-native-bouncy-checkbox";
 import { heightPercentageToDP } from "react-native-responsive-screen"
+import * as ImagePicker from "expo-image-picker";
+import Loader from '../components/Loader.js'
 
 const AddPlaceFrom = (props) => {
 
   const [title, setTitle] = useState('');
   const [address, setAddress] = useState('');
-  const [photoDev, setPhotoDev] = useState('');
   const [addedPhotos, setAddedPhotos] = useState([]);
   const [description, setDescription] = useState('');
   const [perks, setPerks] = useState([]);
@@ -21,7 +22,9 @@ const AddPlaceFrom = (props) => {
   const [checkOut, setCheckOut] = useState('0');
   const [maxGuests, setMaxGuests] = useState('0');
   const [price, setPrice] = useState('0');
+
   const [length, setLength] = useState('0');
+  const [loading, setLoading] = useState(false)
 
   const [perk1, setPerk1] = useState(false);
   const [perk2, setPerk2] = useState(false);
@@ -30,7 +33,6 @@ const AddPlaceFrom = (props) => {
 
   const navigation = useNavigation()
   const owner = props.route.params.user;
-
 
   const handleCbClick = (perknum, perkname) => {
     if (perknum == 1) {
@@ -50,20 +52,24 @@ const AddPlaceFrom = (props) => {
       !perk4 ? (setPerks([...perks, perkname])) : (setPerks([...perks.filter(selectedName => selectedName !== perkname)]))
     }
   }
-
-  const handelPhotoDevice = async (e) => {
-    const file = e.target.files[0]
-    const base64 = await convertToBase64(file);
-    setPhotoDev(base64)
-    e.target.value = null;
-  }
-
-  const handelPhotoClick = () => {
-    if (photoDev) {
-      addedPhotos.push(photoDev)
-      setPhotoDev('')
+  
+  const pickImage = async () => {
+    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (status !== "granted") {
+      Alert.alert(
+        "Permission Denied",
+        `Sorry, we need permission to upload images.`
+      );
+    } else {
+      const result = await ImagePicker.launchImageLibraryAsync();
+      if (!result.canceled) {
+        const file = result.assets[0].uri
+        const base64 = await convertToBase64(file);
+        addedPhotos.push(base64)
+        setLength(length - 1)
+      }
     }
-  }
+  };
 
   const deletePicture = () => {
     addedPhotos.pop()
@@ -71,18 +77,36 @@ const AddPlaceFrom = (props) => {
     setLength(length + 1)
   }
 
+  const convertToBase64 = async (file) => {
+    const data = await fetch(file);
+    const blob = await data.blob();
+    return new Promise(resolve => {
+      const reader = new FileReader();
+      reader.readAsDataURL(blob);
+      reader.onloadend = () => {
+        const base64data = reader.result;
+        resolve(base64data);
+      };
+    });
+
+  }
+
   const handelSubmit = async (e) => {
+    setLoading(true)
     e.preventDefault()
     if (title.length == 0 || description.length == 0 || address.length == 0) {
       alert("Title, Address and Description are Required")
+      setLoading(false)
       return
     }
     else if (price <= 0) {
       alert("Price should be greater than ₹0")
+      setLoading(false)
       return
     }
     else if (addedPhotos.length == 0) {
       alert("Add Atleast one Photo")
+      setLoading(false)
       return
     }
 
@@ -93,24 +117,15 @@ const AddPlaceFrom = (props) => {
     };
     await axios.post(`${backendLink}/places`, placeData);
     navigation.navigate('profilePlace')
+    setLoading(false)
   }
-
-  const convertToBase64 = (file) => {
-    return new promise((resolve, reject) => {
-      const fileReader = new FileReader();
-      fileReader.readAsDataURL(file);
-      fileReader.onload = () => {
-        resolve(fileReader.result)
-      };
-      fileReader.onerror = (error) => {
-        reject(error)
-      }
-    })
-  }
-
 
   return (
     <SafeAreaView>
+      {/* Loader */}
+      {
+        loading ? (<Loader />) : (<></>)
+      }
       <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
         <View style={styles.formContainer}>
           {/* Title */}
@@ -146,28 +161,28 @@ const AddPlaceFrom = (props) => {
             <Text>Images</Text>
             <Text>More = Better</Text>
             <View>
-              {/* <input
-                  type="file"
-                  className='file-upload'
-                  accept='.jpeg, .png, .jpg , .webp'
-                  onChange={(ev) => handelPhotoDevice(ev)}
-                /> 
-              <TouchableOpacity onPress={handelPhotoClick}><Text>Add</Text></TouchableOpacity> 
-              */}
+              <TouchableOpacity
+                onPress={pickImage}>
+                <Text>
+                  Choose Image
+                </Text>
+              </TouchableOpacity>
             </View>
 
             <View>
-              {/* {
+              {
                 addedPhotos.length > 0 ? (
-                  <TouchableOpacity onPress={deletePicture} className='image-button'><Text>Remove Photo</Text></TouchableOpacity>
+                  <TouchableOpacity onPress={deletePicture}><Text>Remove Photo</Text></TouchableOpacity>
                 ) : (<></>)
-              } */}
+              }
             </View>
 
             <View>
               {
                 addedPhotos.map((item, index) => (
-                  <Image key={index} source={item} />
+                  <View>
+                    <Image key={index} style={styles.image} source={{ uri: item }} />
+                  </View>
                 ))
               }
             </View>
@@ -278,5 +293,10 @@ const styles = StyleSheet.create({
     padding: 4,
     borderWidth: 1,
     borderColor: 'rgba(0,0,0,0.16)',
-  }
+  },
+  image: {
+    width: 100,
+    height: 100,
+    borderRadius: 8,
+  },
 })

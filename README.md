@@ -6,14 +6,16 @@
 - react-navigation/native
 - react-navigation/native-stack
 - axios
-- react-native-safe-area-context
-- expo-linear-gradient
 - dayjs
+- react-native-safe-area-context
+- expo-image-picker
+- expo-linear-gradient
 - react-native-heroicons
 - react-native-snap-carousel
+- react-native-date-picker
 - react-native-bouncy-checkbox
 
 ToDo:
-Booking Widget Banana hai
-add place wale me images handel karni hai
-Update places wala form banana hai
+Booking Widget Design
+Add Place Form Design
+Icons Add
