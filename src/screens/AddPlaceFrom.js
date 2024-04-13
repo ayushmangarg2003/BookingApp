@@ -9,6 +9,7 @@ import BouncyCheckbox from "react-native-bouncy-checkbox";
 import { heightPercentageToDP } from "react-native-responsive-screen"
 import * as ImagePicker from "expo-image-picker";
 import Loader from '../components/Loader.js'
+import { ArrowUpOnSquareIcon} from 'react-native-heroicons/outline';
 
 const AddPlaceFrom = (props) => {
 
@@ -18,10 +19,10 @@ const AddPlaceFrom = (props) => {
   const [description, setDescription] = useState('');
   const [perks, setPerks] = useState([]);
   const [extraInfo, setExtraInfo] = useState('');
-  const [checkIn, setCheckIn] = useState('0');
-  const [checkOut, setCheckOut] = useState('0');
-  const [maxGuests, setMaxGuests] = useState('0');
-  const [price, setPrice] = useState('0');
+  const [checkIn, setCheckIn] = useState('');
+  const [checkOut, setCheckOut] = useState('');
+  const [maxGuests, setMaxGuests] = useState('');
+  const [price, setPrice] = useState('');
 
   const [length, setLength] = useState('0');
   const [loading, setLoading] = useState(false)
@@ -52,7 +53,7 @@ const AddPlaceFrom = (props) => {
       !perk4 ? (setPerks([...perks, perkname])) : (setPerks([...perks.filter(selectedName => selectedName !== perkname)]))
     }
   }
-  
+
   const pickImage = async () => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (status !== "granted") {
@@ -130,71 +131,61 @@ const AddPlaceFrom = (props) => {
         <View style={styles.formContainer}>
           {/* Title */}
           <View style={styles.inputContainer}>
-            <Text>Title</Text>
-            <Text>Title Should be Short but Catchy</Text>
-            <TextInput placeholder='Max Characters: 50' value={title} onChangeText={(text) => setTitle(text)} maxLength={50} />
+            <Text style={styles.inputText}>Title</Text>
+            <TextInput style={styles.textInput} placeholder='Max Characters: 50' value={title.toString()} onChangeText={(text) => setTitle(text)} maxLength={50} />
           </View>
 
           {/* Address */}
           <View style={styles.inputContainer}>
-            <Text>Address</Text>
-            <Text>Address of the Place</Text>
-            <TextInput placeholder="Ex: Delhi, India" value={address} onChangeText={(text) => setAddress(text)} />
+            <Text style={styles.inputText}>Address</Text>
+            <TextInput style={styles.textInput} placeholder="Ex: Delhi, India" value={address.toString()} onChangeText={(text) => setAddress(text)} />
           </View>
 
           {/* Description */}
           <View style={styles.inputContainer}>
-            <Text>Description</Text>
-            <Text>Description of the Place</Text>
-            <TextInput value={description} placeholder='Max Characters: 500' onChangeText={(text) => setDescription(text)} maxLength={500} />
+            <Text style={styles.inputText}>Description</Text>
+            <TextInput style={styles.textInput} value={description.toString()} placeholder='Max Characters: 500' onChangeText={(text) => setDescription(text)} maxLength={500} />
           </View>
 
           {/* Extra Information */}
           <View style={styles.inputContainer}>
-            <Text>Extra Information</Text>
-            <Text>House Rules Etc</Text>
-            <TextInput value={extraInfo} placeholder='Max Characters: 500' onChangeText={(text) => setExtraInfo(text)} />
+            <Text style={styles.inputText}>Extra Information</Text>
+            <TextInput style={styles.textInput} value={extraInfo.toString()} placeholder='Max Characters: 500' onChangeText={(text) => setExtraInfo(text)} />
           </View>
 
           {/* Images */}
           <View style={styles.inputContainer}>
-            <Text>Images</Text>
-            <Text>More = Better</Text>
+            <Text style={styles.inputText}>Upload Images</Text>
             <View>
               <TouchableOpacity
                 onPress={pickImage}>
-                <Text>
-                  Choose Image
-                </Text>
+                {/* <Text> */}
+                <ArrowUpOnSquareIcon width={'60px'} height={'60px'} strokeWidth={1} color={'#111'} />
+                {/* </Text> */}
               </TouchableOpacity>
             </View>
 
-            <View>
-              {
-                addedPhotos.length > 0 ? (
-                  <TouchableOpacity onPress={deletePicture}><Text>Remove Photo</Text></TouchableOpacity>
-                ) : (<></>)
-              }
-            </View>
-
-            <View>
+            <View style={styles.imageGallery}>
               {
                 addedPhotos.map((item, index) => (
-                  <View>
-                    <Image key={index} style={styles.image} source={{ uri: item }} />
-                  </View>
+                  <Image key={index} style={styles.image} source={{ uri: item }} />
                 ))
               }
             </View>
-
+            <View>
+              {
+                addedPhotos.length > 0 ? (
+                  <TouchableOpacity style={styles.btnParentSmall} onPress={deletePicture}><Text style={styles.btnText}>Remove Photo</Text></TouchableOpacity>
+                ) : (<></>)
+              }
+            </View>
           </View>
 
           {/* Perks */}
           <View style={styles.inputContainer}>
-            <Text>Perks</Text>
-            <Text>Checkmark Perks</Text>
-            <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', padding: 4, }}>
-              <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+            <Text style={styles.inputText}>Perks</Text>
+            <View style={styles.perkParent}>
+              <View style={styles.perk}>
                 <BouncyCheckbox
                   disableBuiltInState
                   isChecked={perk1}
@@ -203,7 +194,7 @@ const AddPlaceFrom = (props) => {
                 />
                 <Text>WiFi</Text>
               </View>
-              <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+              <View style={styles.perk}>
                 <BouncyCheckbox
                   disableBuiltInState
                   isChecked={perk2}
@@ -212,7 +203,7 @@ const AddPlaceFrom = (props) => {
                 />
                 <Text>Parking</Text>
               </View>
-              <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+              <View style={styles.perk}>
                 <BouncyCheckbox
                   disableBuiltInState
                   isChecked={perk3}
@@ -221,7 +212,7 @@ const AddPlaceFrom = (props) => {
                 />
                 <Text>Pool</Text>
               </View>
-              <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+              <View style={styles.perk}>
                 <BouncyCheckbox
                   disableBuiltInState
                   isChecked={perk4}
@@ -234,40 +225,39 @@ const AddPlaceFrom = (props) => {
           </View>
           {/* CheckIn */}
           <View style={styles.inputContainer}>
-            <Text>CheckIn</Text>
+            <Text style={styles.inputText}>CheckIn</Text>
             <View>
-              <TextInput keyboardType='number-pad' value={checkIn} placeholder='Check In [0-24]' onChangeText={(text) => setCheckIn(text)} maxLength={2} />
+              <TextInput style={styles.textInput} keyboardType='number-pad' value={checkIn.toString()} placeholder='Check In [0-24]' onChangeText={(text) => setCheckIn(text)} maxLength={2} />
             </View>
           </View>
 
           {/* CheckOut */}
           <View style={styles.inputContainer}>
-            <Text>CheckOut</Text>
+            <Text style={styles.inputText}>CheckOut</Text>
             <View>
-              <TextInput keyboardType='number-pad' value={checkOut} placeholder='Check Out [0-24]' onChangeText={(text) => setCheckOut(text)} maxLength={2} />
+              <TextInput style={styles.textInput} keyboardType='number-pad' value={checkOut.toString()} placeholder='Check Out [0-24]' onChangeText={(text) => setCheckOut(text)} maxLength={2} />
             </View>
           </View>
 
           {/* Max Guests */}
           <View style={styles.inputContainer}>
-            <Text>Maximum Guests</Text>
+            <Text style={styles.inputText}>Maximum Guests</Text>
             <View>
-              <TextInput keyboardType='number-pad' value={maxGuests} placeholder='Max Guests [0-99]' onChangeText={(text) => setMaxGuests(text)} maxLength={2} />
+              <TextInput style={styles.textInput} keyboardType='number-pad' value={maxGuests.toString()} placeholder='Max Guests [0-99]' onChangeText={(text) => setMaxGuests(text)} maxLength={2} />
             </View>
           </View>
 
           {/* Price */}
           <View style={styles.inputContainer}>
-            <Text>Price Per Night</Text>
-            <Text>In Rupees</Text>
+            <Text style={styles.inputText}>Price Per Night (₹)</Text>
             <View>
-              <TextInput keyboardType='number-pad' value={price} placeholder='For Ex: 10000' onChangeText={(text) => setPrice(text)} />
+              <TextInput style={styles.textInput} keyboardType='number-pad' value={price.toString()} placeholder='For Ex: 10000' onChangeText={(text) => setPrice(text)} />
             </View>
           </View>
 
           {/* Submit Button */}
-          <TouchableOpacity style={styles.inputContainer} onPress={handelSubmit}>
-            <Text>Save</Text>
+          <TouchableOpacity style={styles.btnParent} onPress={handelSubmit}>
+            <Text style={styles.btnText}>Save</Text>
           </TouchableOpacity>
 
         </View>
@@ -291,12 +281,65 @@ const styles = StyleSheet.create({
     width: '95%',
     alignSelf: 'center',
     padding: 4,
+    backgroundColor: '#fff',
+  },
+  textInput: {
     borderWidth: 1,
-    borderColor: 'rgba(0,0,0,0.16)',
+    borderColor: 'rgba(0,0,0,0.1)',
+    paddingVertical: 2,
+    paddingHorizontal: 6,
+  },
+  inputText: {
+    display: 'flex',
+    justifyContent: 'center',
+    fontSize: 16,
+    paddingVertical: 4,
+    fontWeight: '800',
+  },
+  imageGallery: {
+    display: 'flex',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 8,
   },
   image: {
-    width: 100,
-    height: 100,
+    objectFit: 'cover',
+    width: '30%',
+    height: 108,
     borderRadius: 8,
+  },
+  btnParent: {
+    backgroundColor: red,
+    width: '95%',
+    alignSelf: 'center',
+    display: 'flex',
+    alignItems: 'center',
+    padding: 12,
+    borderRadius: 4,
+  },
+  btnParentSmall: {
+    backgroundColor: red,
+    display: 'flex',
+    alignItems: 'center',
+    paddingVertical: 8,
+    borderRadius: 4,
+    marginVertical: 8,
+  },
+  btnText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: '600'
+  },
+  perkParent: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    gap:16,
+    padding: 0,
+  },
+  perk: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
   },
 })

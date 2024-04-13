@@ -58,7 +58,7 @@ const ProfilePlacesScreen = () => {
             <View style={styles.cardContainer}>
               {
                 placesArray.filter(checkPlace).map((item) => (
-                  <PlaceCard to={'singleplace'} key={item._id} place={item} />
+                  <PlaceCard to={'editPlace'} key={item._id} place={item} />
                 ))
               }
             </View>
