@@ -1,6 +1,6 @@
 import { Alert, Image, ScrollView, TextInput, TouchableOpacity } from "react-native"
 import { StyleSheet, Text, View } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { backendLink, red } from "../constants/constants.js"
 import axios from 'axios';
@@ -37,7 +37,6 @@ const EditPlace = (props) => {
   const id = props.route.params.place._id
   const getUser = async () => {
     await axios.get(`${backendLink}/places/${id}`).then(response => {
-      // console.log(response.data);
       setOwner(response.data.owner)
       setTitle(response.data.title);
       setAddress(response.data.address);
@@ -52,7 +51,9 @@ const EditPlace = (props) => {
     })
     setLoading(false)
   }
-  getUser()
+  useEffect(() => {
+    getUser()
+  }, [])
 
 
   const handleCbClick = (perknum, perkname) => {
@@ -136,14 +137,13 @@ const EditPlace = (props) => {
       description, perks, extraInfo,
       checkIn, checkOut, maxGuests, price,
     };
-    await axios.post(`${backendLink}/places`, placeData);
+    await axios.put(`${backendLink}/places`, { id, ...placeData });
     navigation.navigate('profilePlace')
     setLoading(false)
   }
 
   return (
     <SafeAreaView>
-      {/* Loader */}
       {
         loading ? (<Loader />) : (<></>)
       }

@@ -15,7 +15,3 @@
 - react-native-date-picker
 - react-native-bouncy-checkbox
 
-ToDo:
-Booking Widget Design
-Add Place Form Design
-Icons Add

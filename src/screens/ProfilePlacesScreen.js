@@ -47,10 +47,16 @@ const ProfilePlacesScreen = () => {
       }
       {
         empty ? (
-          <View style={styles.noDataFound}>
-            <Image style={styles.image} source={noData} />
-            <Text style={styles.noDataText}>No Places Here</Text>
-          </View>) : (
+          <>
+            <View>
+              <TouchableOpacity style={styles.newBtn} onPress={handelAddClick}><Text style={styles.btnText}>Add New Places</Text></TouchableOpacity>
+            </View>
+            <View style={styles.noDataFound}>
+              <Image style={styles.image} source={noData} />
+              <Text style={styles.noDataText}>No Places Here</Text>
+            </View>
+          </>
+        ) : (
           <ScrollView style={styles.cardParent} showsVerticalScrollIndicator={false}>
             <View>
               <TouchableOpacity style={styles.newBtn} onPress={handelAddClick}><Text style={styles.btnText}>Add New Places</Text></TouchableOpacity>

@@ -6,7 +6,7 @@ import { AuthContext } from '../context/AuthContext';
 import axios from 'axios';
 import { backendLink, red, white } from '../constants/constants';
 import DatePicker from 'react-native-modern-datepicker';
-import { CalendarDaysIcon } from 'react-native-heroicons/outline';
+import { CalendarDaysIcon, XMarkIcon } from 'react-native-heroicons/outline';
 
 const BookingWidget = (props) => {
   const [checkIn, setCheckIn] = useState("");
@@ -29,7 +29,7 @@ const BookingWidget = (props) => {
       setError("Login or Signup First");
     } else {
       const response = await axios.post(`${backendLink}/bookings`, {
-        checkIn: checkIn, checkOut: checkOut, numberOfGuests: numberOfGuests, name: name, phone: phone, user: authState.email,
+        checkIn: checkIn, checkOut: checkOut, numberOfGuests: numberOfGuests, name: name, phone: '+91'.concat(phone), user: authState.email,
         place: place._id,
         price: numberOfNights * place.price,
       });
@@ -65,7 +65,7 @@ const BookingWidget = (props) => {
             {
               showCheckin ? (
                 <View style={styles.calanderPicker}>
-                  <TouchableOpacity onPress={handelShowCheckIn}><Text>X</Text></TouchableOpacity>
+                  <TouchableOpacity onPress={handelShowCheckIn}><Text><XMarkIcon strokeWidth={1} color={'#111'} /> </Text></TouchableOpacity>
                   <DatePicker
                     mode="calendar"
                     options={{
@@ -91,7 +91,7 @@ const BookingWidget = (props) => {
             {
               showCheckout ? (
                 <View style={styles.calanderPicker}>
-                  <TouchableOpacity onPress={handelShowCheckOut}><Text>X</Text></TouchableOpacity>
+                  <TouchableOpacity onPress={handelShowCheckOut}><Text><XMarkIcon strokeWidth={1} color={'#111'} /> </Text></TouchableOpacity>
                   <DatePicker
                     mode="calendar"
                     options={{
@@ -118,16 +118,16 @@ const BookingWidget = (props) => {
         {numberOfNights != 0 && (
           <View style={styles.extraDetailsParent}>
             <View style={styles.checkItemNew}>
-              <Text>Number Of Guests:</Text>
-              <TextInput style={styles.textInput} keyboardType='number-pad' value={numberOfGuests} placeholder={'Maximum: 99'} onChangeText={(text) => setNumberOfGuests(text)} maxLength={2} />
+              <Text style={styles.inputText}>Number Of Guests:</Text>
+              <TextInput style={styles.textInput} keyboardType='number-pad' value={numberOfGuests.toString()} placeholder={'Maximum: 99'} onChangeText={(text) => setNumberOfGuests(text)} maxLength={2} />
             </View>
             <View style={styles.checkItemNew}>
-              <Text>Your Full Name:</Text>
-              <TextInput style={styles.textInput} placeholder='Maximum Characters: 50' value={name} onChangeText={(text) => setName(text)} maxLength={50} />
+              <Text style={styles.inputText}>Your Full Name:</Text>
+              <TextInput style={styles.textInput} placeholder='Maximum Characters: 50' value={name.toString()} onChangeText={(text) => setName(text)} maxLength={50} />
             </View>
             <View style={styles.checkItemNew}>
-              <Text>Phone Number:</Text>
-              <TextInput style={styles.textInput} keyboardType='number-pad' value={`${phone}`} placeholder='Ex: 9876543210' onChangeText={(text) => setPhone(text)} maxLength={10} />
+              <Text style={styles.inputText}>Phone Number:</Text>
+              <TextInput style={styles.textInput} keyboardType='number-pad' value={phone.toString()} placeholder='Ex:9876543210' onChangeText={(text) => setPhone(text)} maxLength={10} />
             </View>
           </View>
         )}
@@ -240,5 +240,9 @@ const styles = StyleSheet.create({
     color: red,
     position: 'relative',
     top: -10,
+  },
+  inputText: {
+    fontSize: 16,
+    fontWeight: '600'
   }
 })

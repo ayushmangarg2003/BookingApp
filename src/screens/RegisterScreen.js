@@ -21,16 +21,6 @@ const RegisterScreen = () => {
 
   const handleRegister = () => {
     setLoading(true)
-    Snackbar.show({
-      text: 'Hello world',
-      duration: Snackbar.LENGTH_INDEFINITE,
-      action: {
-        text: 'UNDO',
-        textColor: 'green',
-        onPress: () => { /* Do something. */ },
-      },
-    });
-
     const user = { name: name, email: email, password: password }
     axios.post(`${backendLink}/user/register`, user)
       .then((response) => {
