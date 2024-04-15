@@ -6,7 +6,8 @@ Website :- https://homestayz.vercel.app
 Github :- https://github.com/ayushmangarg2003/Homestayz  
 App :- https://github.com/ayushmangarg2003/HomestayzApp
 
-App Apk Link :
+AAB File Link :
+https://drive.google.com/file/d/1qUbR-bdUuRDrm5wftbNaq-OXR_JSqWPT/view?usp=sharing
 
 ## Dependencies
 
