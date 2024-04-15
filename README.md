@@ -2,9 +2,9 @@
 
 Homestayz is an innovative Homestay booking platform developed using MERN Stack. The platform offers seamless integration of CRUD functionalities. With its intuitive design and efficient user experience, Homestayz simplifies the process of booking and renting.
 
-Website :- https://homestayz.vercel.app  
-Github :- https://github.com/ayushmangarg2003/Homestayz  
-App :- https://github.com/ayushmangarg2003/HomestayzApp
+Website   :- https://homestayz.vercel.app  
+Github    :- https://github.com/ayushmangarg2003/Homestayz  
+App       :- https://github.com/ayushmangarg2003/HomestayzApp
 
 AAB File Link :
 https://drive.google.com/file/d/1qUbR-bdUuRDrm5wftbNaq-OXR_JSqWPT/view?usp=sharing
