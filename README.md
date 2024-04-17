@@ -1,13 +1,18 @@
-### This is a React Native APP
+# Homestayz
 
-Homestayz is an innovative Homestay booking platform developed using MERN Stack. The platform offers seamless integration of CRUD functionalities. With its intuitive design and efficient user experience, Homestayz simplifies the process of booking and renting.
+## User Story 
+As a host, I want to easily showcase my property on Homestayz, so I can attract potential guests and increase bookings.    
 
-Website   :- https://homestayz.vercel.app  
-Github    :- https://github.com/ayushmangarg2003/Homestayz  
-App       :- https://github.com/ayushmangarg2003/HomestayzApp
+As a user, I want to browse and book homestays conveniently on Homestayz, so I can find comfortable accommodations for my travels hassle-free.  
 
-AAB File Link :
-https://drive.google.com/file/d/1qUbR-bdUuRDrm5wftbNaq-OXR_JSqWPT/view?usp=sharing
+## Description
+Homestayz is an innovative Homestay booking platform developed using the MERN Stack. The platform offers seamless integration of CRUD functionalities, allowing users to easily Create, Read, Update, and Delete Homestays. With its intuitive design and efficient user experience, Homestayz simplifies the process of booking and renting.
+
+
+Website :- https://homestayz.vercel.app  
+Website Github :- https://github.com/ayushmangarg2003/Homestayz  
+App Github :- https://github.com/ayushmangarg2003/HomestayzApp
+AAB File Link :- https://drive.google.com/file/d/1qUbR-bdUuRDrm5wftbNaq-OXR_JSqWPT/view?usp=sharing
 
 ## Dependencies
 
